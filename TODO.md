@@ -1,37 +1,39 @@
 # MessagePack for Java 0.7
 
-An implementation of [MessagePack](http://msgpack.org/) for Java.
+参考: [msgpack-java 改善案](http://togetter.com/li/445800)
 
-## Installation
+## 1. Android 対応の強化
+- アノテーションプロセッサ（apt）でTemplateをプリコンパイルする案
+    * 開発環境がEclipse or mavenであることを仮定するとか、多少ドキュメントで対応するべき事案もあるかも
+    * この辺りはJDOやJPAの実装が参考になるのかも
 
-To build the JAR file of MessagePack, you need to install Maven (http://maven.apache.org), then type the following command:
+## 2. TemplateRegistry からの自動ルックアップの見直し
+- TemplateRegistry#lookupXXX メソッドの見直し
+    * Generics を含む Java の型システムに対応した低レイヤAPIを整理する必要がありそう
+    * 実行時に取れる情報には限りがあるので、ユーザーに指定させるべき情報を洗い出す必要もあり
+- 悪い例
+    * List を lookup すると ListTemplate が見つかり、ArrayList でデシリアライズされる
+    * LinkedList を lookup しても ArrayList でデシリアライズされる
+    * Unpacker.read(Class) メソッドでも走り、unpacker.read(LinkedList.class) でも困る
+- TemplateRegistry のキャッシュの実装がマズイ
+- TemplateBuilder がシリアライズとデシリアライズの両方のメソッドを同時に生成する点
+- Generics で <?> を使用すると pack できるけど、unpack が困難
 
-    $ mvn package
+## 3. msgpack-java のモジュール化
+- TemplateRegistry や TemplateBuilder を別のパッケージとして切り出す
+- msgpack-java のコアはシンプルにするとか
+    * メンテナンス性やリリースサイクルの観点から好ましい
+    * github 上で別リポジトリにしても良い
+    * msgpack-java は Packer, Unpacker, Valueだけを含む
+    * 低レイヤと便利機能群は分割しといたほうが良い
 
-To locally install the project, type
+## 4. Packer/Unpacker の実装がかなり複雑でリファクタリングしたい
+- msgpack-ruby (jruby) で採用した設計がシンプルに仕上がったので、そっちに寄せる案
 
-    $ mvn install
+## 5. Template の動的生成をシンプルに
 
-To generate project files (.project, .classpath) for Eclipse, do
-
-    $ mvn eclipse:eclipse
-
-then import the folder from your Eclipse.
-
-Next, open the preference page in Eclipse and add the CLASSPATH variable:
-
-    M2_REPO = $HOME/.m2/repository
-
-where $HOME is your home directory. In Windows XP, $HOME is:
-
-    C:/Documents and Settings/(user name)/.m2/repository
-
-
-## How to release
-
-To relese the project (compile, test, tagging, deploy), please use the commands as follows:
-
-    $ mvn release:prepare
-    $ mvn release:perform
-
-
+## 6. アノテーションの整理
+- 現状の実装はフィールド一覧を順番通りにシリアライズする「良きに計らう」実装でであるが、若干混乱を招いている印象
+    * 何がシリアライズされるのか分かっていないと分からない
+    * アノテーションで明示させた方が質問が減りそう
+    * 言い換えれば、カスタムクラスのシリアライズするには基本的にアノテーションが必須など
