@@ -23,12 +23,12 @@
 - TemplateRegistry や TemplateBuilder を別のパッケージとして切り出す
 - msgpack-java のコアはシンプルにするとか
     * メンテナンス性やリリースサイクルの観点から好ましい
-    * github 上で別リポジトリにしても良い
+    * github 上で別リポジトリにしても良い or maven の submodules
     * msgpack-java は Packer, Unpacker, Valueだけを含む
     * 低レイヤと便利機能群は分割しといたほうが良い
 
 ## 4. Packer/Unpacker の実装がかなり複雑でリファクタリングしたい
-- msgpack-ruby (jruby) で採用した設計がシンプルに仕上がったので、そっちに寄せる案
+- [msgpack-ruby](https://github.com/msgpack/msgpack-ruby) で採用した設計がシンプルに仕上がったので、そっちに寄せる案
 
 ## 5. Template の動的生成をシンプルに
 
