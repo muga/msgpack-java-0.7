@@ -43,3 +43,7 @@ msgpack-java/src/core (packer, unpacker, buffer, value)
     * 何がシリアライズされるのか分かっていないと分からない
     * アノテーションで明示させた方が質問が減りそう
     * 言い換えれば、カスタムクラスのシリアライズするには基本的にアノテーションが必須など
+
+## 7. MessageTypeException の継承関係の変更
+- RuntimeException を継承しているため、catch し忘れが起きやすいのでは？
+    * Exception を継承した派生クラスにすれば解決するけど？ (互換性どうする？)
