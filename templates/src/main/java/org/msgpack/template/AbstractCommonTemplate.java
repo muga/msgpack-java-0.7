@@ -18,37 +18,16 @@
 package org.msgpack.template;
 
 import java.io.IOException;
+
 import org.msgpack.packer.Packer;
 import org.msgpack.unpacker.Unpacker;
-import org.msgpack.MessageTypeException;
 
-public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
-    private BooleanTemplate() {
-	}
+public abstract class AbstractCommonTemplate<T> implements PackerTemplate<T>, UnpackerTemplate<T> {
+    public void write(Packer packer, T v) throws IOException {
+        write(packer, v, false);
+    }
 
-	public void write(Packer packer, Boolean target, boolean required)
-			throws IOException {
-		if (target == null) {
-			if (required) {
-				throw new MessageTypeException("Attempted to write null");
-			}
-			packer.writeNil();
-			return;
-		}
-		packer.write((boolean) target);
-	}
-
-	public Boolean read(Unpacker unpacker, Boolean to, boolean required)
-			throws IOException {
-		if (!required && unpacker.trySkipNil()) {
-			return null;
-		}
-		return unpacker.readBoolean();
-	}
-
-	static public BooleanTemplate getInstance() {
-		return instance;
-	}
-
-	static final BooleanTemplate instance = new BooleanTemplate();
+    public T read(Unpacker u, T to) throws IOException {
+        return read(u, to, false);
+    }
 }
