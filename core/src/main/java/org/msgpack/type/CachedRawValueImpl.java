@@ -82,8 +82,8 @@ public class CachedRawValueImpl extends AbstractRawValue {
     public String string() {
         if(normalizedString == null) {
             CharsetDecoder decoder = UTF_8.newDecoder()
-                .onMalformedInput(CodingErrorAction.IGNORE)
-                .onUnmappableCharacter(CodingErrorAction.IGNORE);
+                .onMalformedInput(CodingErrorAction.REPLACE)
+                .onUnmappableCharacter(CodingErrorAction.REPLACE);
             try {
                 normalizedString = decoder.decode(ByteBuffer.wrap(bytes)).toString();
             } catch (CharacterCodingException ex) {
@@ -92,7 +92,7 @@ public class CachedRawValueImpl extends AbstractRawValue {
                 normalizedString = new String(bytes);
             }
         }
-            return normalizedString;
+        return normalizedString;
     }
 
     @Override
