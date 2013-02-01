@@ -22,11 +22,11 @@ import org.msgpack.packer.Packer;
 import org.msgpack.unpacker.Unpacker;
 import org.msgpack.MessageTypeException;
 
-public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
-    private BooleanTemplate() {
+public class IntegerArrayTemplate extends AbstractCommonTemplate<int[]> {
+	private IntegerArrayTemplate() {
 	}
 
-    public void write(Packer packer, Boolean target, boolean required)
+	public void write(Packer packer, int[] target, boolean required)
 			throws IOException {
 		if (target == null) {
 			if (required) {
@@ -35,20 +35,33 @@ public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
 			packer.writeNil();
 			return;
 		}
-		packer.write((boolean) target);
+		packer.writeArrayHeader(target.length);
+		for (int a : target) {
+			packer.write(a);
+		}
 	}
 
-	public Boolean read(Unpacker unpacker, Boolean to, boolean required)
+	public int[] read(Unpacker unpacker, int[] to, boolean required)
 			throws IOException {
 		if (!required && unpacker.trySkipNil()) {
 			return null;
 		}
-		return unpacker.readBoolean();
+		int n = unpacker.readArrayHeader();
+		int[] array;
+		if (to != null && to.length == n) {
+			array = to;
+		} else {
+			array = new int[n];
+		}
+		for (int i = 0; i < n; i++) {
+			array[i] = unpacker.readInt();
+		}
+		return array;
 	}
 
-	static public BooleanTemplate getInstance() {
+	static public IntegerArrayTemplate getInstance() {
 		return instance;
 	}
 
-	static final BooleanTemplate instance = new BooleanTemplate();
+	static final IntegerArrayTemplate instance = new IntegerArrayTemplate();
 }

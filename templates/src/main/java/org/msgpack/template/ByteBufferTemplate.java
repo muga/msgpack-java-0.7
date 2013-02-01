@@ -18,15 +18,17 @@
 package org.msgpack.template;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+
 import org.msgpack.packer.Packer;
 import org.msgpack.unpacker.Unpacker;
 import org.msgpack.MessageTypeException;
 
-public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
-    private BooleanTemplate() {
-	}
+public class ByteBufferTemplate extends AbstractCommonTemplate<ByteBuffer> {
+    private ByteBufferTemplate() {
+    }
 
-    public void write(Packer packer, Boolean target, boolean required)
+	public void write(Packer packer, ByteBuffer target, boolean required)
 			throws IOException {
 		if (target == null) {
 			if (required) {
@@ -35,20 +37,20 @@ public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
 			packer.writeNil();
 			return;
 		}
-		packer.write((boolean) target);
+		packer.write(target);
 	}
 
-	public Boolean read(Unpacker unpacker, Boolean to, boolean required)
+	public ByteBuffer read(Unpacker unpacker, ByteBuffer to, boolean required)
 			throws IOException {
 		if (!required && unpacker.trySkipNil()) {
 			return null;
 		}
-		return unpacker.readBoolean();
+		return unpacker.readByteBuffer(); // TODO read to 'to' obj?
 	}
 
-	static public BooleanTemplate getInstance() {
+	static public ByteBufferTemplate getInstance() {
 		return instance;
 	}
 
-	static final BooleanTemplate instance = new BooleanTemplate();
+	static final ByteBufferTemplate instance = new ByteBufferTemplate();
 }

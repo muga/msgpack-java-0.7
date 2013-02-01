@@ -18,15 +18,17 @@
 package org.msgpack.template;
 
 import java.io.IOException;
+import java.util.Date;
+
 import org.msgpack.packer.Packer;
 import org.msgpack.unpacker.Unpacker;
 import org.msgpack.MessageTypeException;
 
-public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
-    private BooleanTemplate() {
+public class DateTemplate extends AbstractCommonTemplate<Date> {
+	private DateTemplate() {
 	}
 
-    public void write(Packer packer, Boolean target, boolean required)
+	public void write(Packer packer, Date target, boolean required)
 			throws IOException {
 		if (target == null) {
 			if (required) {
@@ -35,20 +37,21 @@ public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
 			packer.writeNil();
 			return;
 		}
-		packer.write((boolean) target);
+		packer.write((long) target.getTime());
 	}
 
-	public Boolean read(Unpacker unpacker, Boolean to, boolean required)
+	public Date read(Unpacker unpacker, Date to, boolean required)
 			throws IOException {
 		if (!required && unpacker.trySkipNil()) {
 			return null;
 		}
-		return unpacker.readBoolean();
+		long temp = unpacker.readLong();
+		return new Date(temp);
 	}
 
-	static public BooleanTemplate getInstance() {
+	static public DateTemplate getInstance() {
 		return instance;
 	}
 
-	static final BooleanTemplate instance = new BooleanTemplate();
+	static final DateTemplate instance = new DateTemplate();
 }

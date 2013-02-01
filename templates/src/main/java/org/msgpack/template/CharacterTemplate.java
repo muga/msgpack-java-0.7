@@ -18,15 +18,22 @@
 package org.msgpack.template;
 
 import java.io.IOException;
+import org.msgpack.MessageTypeException;
 import org.msgpack.packer.Packer;
 import org.msgpack.unpacker.Unpacker;
-import org.msgpack.MessageTypeException;
 
-public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
-    private BooleanTemplate() {
+/**
+ * CharacterTemplate<br/>
+ * 
+ * @author watabiki
+ */
+public class CharacterTemplate extends AbstractCommonTemplate<Character> {
+
+	private CharacterTemplate() {
 	}
 
-    public void write(Packer packer, Boolean target, boolean required)
+	@Override
+	public void write(Packer packer, Character target, boolean required)
 			throws IOException {
 		if (target == null) {
 			if (required) {
@@ -35,20 +42,21 @@ public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
 			packer.writeNil();
 			return;
 		}
-		packer.write((boolean) target);
+		packer.write((int) (char) target);
 	}
 
-	public Boolean read(Unpacker unpacker, Boolean to, boolean required)
+	@Override
+	public Character read(Unpacker unpacker, Character to, boolean required)
 			throws IOException {
 		if (!required && unpacker.trySkipNil()) {
 			return null;
 		}
-		return unpacker.readBoolean();
+		return (char) unpacker.readInt();
 	}
 
-	static public BooleanTemplate getInstance() {
+	static public CharacterTemplate getInstance() {
 		return instance;
 	}
 
-	static final BooleanTemplate instance = new BooleanTemplate();
+	static final CharacterTemplate instance = new CharacterTemplate();
 }

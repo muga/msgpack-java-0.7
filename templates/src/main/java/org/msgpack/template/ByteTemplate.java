@@ -22,11 +22,11 @@ import org.msgpack.packer.Packer;
 import org.msgpack.unpacker.Unpacker;
 import org.msgpack.MessageTypeException;
 
-public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
-    private BooleanTemplate() {
-	}
+public class ByteTemplate extends AbstractCommonTemplate<Byte> {
+    private ByteTemplate() {
+    }
 
-    public void write(Packer packer, Boolean target, boolean required)
+	public void write(Packer packer, Byte target, boolean required)
 			throws IOException {
 		if (target == null) {
 			if (required) {
@@ -35,20 +35,20 @@ public class BooleanTemplate extends AbstractCommonTemplate<Boolean> {
 			packer.writeNil();
 			return;
 		}
-		packer.write((boolean) target);
+		packer.write((byte) target);
 	}
 
-	public Boolean read(Unpacker unpacker, Boolean to, boolean required)
+	public Byte read(Unpacker unpacker, Byte to, boolean required)
 			throws IOException {
 		if (!required && unpacker.trySkipNil()) {
 			return null;
 		}
-		return unpacker.readBoolean();
+		return unpacker.readByte();
 	}
 
-	static public BooleanTemplate getInstance() {
+	static public ByteTemplate getInstance() {
 		return instance;
 	}
 
-	static final BooleanTemplate instance = new BooleanTemplate();
+	static final ByteTemplate instance = new ByteTemplate();
 }
