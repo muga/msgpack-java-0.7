@@ -1,13 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
   <groupId>org.msgpack</groupId>
-  <artifactId>msgpack</artifactId>
-  <name>MessagePack for Java</name>
-  <description>MessagePack for Java is a binary-based efficient object
-      serialization library in Java.</description>
-  <version>0.6.8-SNAPSHOT</version>
-  <packaging>bundle</packaging>
+  <artifactId>msgpack-project</artifactId>
+  <name>Project of MessagePack for Java</name>
+  <version>0.7.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
   <url>http://msgpack.org/</url>
 
   <licenses>
@@ -29,6 +34,11 @@
     <url>https://github.com/msgpack/msgpack-java/issues</url>
   </issueManagement>
 
+  <modules>
+    <module>core</module>
+    <module>templates</module>
+  </modules>
+
   <developers>
     <developer>
       <id>frsyuki</id>
@@ -44,17 +54,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.googlecode.json-simple</groupId>
-      <artifactId>json-simple</artifactId>
-      <version>1.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.javassist</groupId>
-      <artifactId>javassist</artifactId>
-      <version>3.16.1-GA</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.2</version>
@@ -62,23 +61,7 @@
     </dependency>
   </dependencies>
 
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
-
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
-    <testResources>
-      <testResource>
-        <directory>src/test/resources</directory>
-      </testResource>
-    </testResources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
