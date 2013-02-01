@@ -17,11 +17,12 @@
 //
 package org.msgpack.type;
 
+import java.nio.charset.CharacterCodingException;
+
 public interface RawValue extends Value {
     public byte[] getByteArray();
 
-    public String getString();
+    public String getString() throws CharacterCodingException;
 
-    // string() doesn't throw CharacterCodingException
     public String string();
 }

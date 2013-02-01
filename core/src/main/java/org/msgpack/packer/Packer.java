@@ -21,6 +21,8 @@ import java.math.BigInteger;
 import java.io.IOException;
 import java.io.Closeable;
 import java.io.Flushable;
+import java.nio.ByteBuffer;
+import org.msgpack.type.Value;
 
 /**
  * Packer is an interface to serialize objects into an internal buffer,

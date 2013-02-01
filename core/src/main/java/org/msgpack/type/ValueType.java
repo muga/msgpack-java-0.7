@@ -15,25 +15,8 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.unpacker;
+package org.msgpack.type;
 
-import java.io.IOException;
-import java.io.Closeable;
-import org.msgpack.type.Value;
-
-public interface Unpacker extends Closeable {
-    public Value read() throws IOException;
-
-    public void skip() throws IOException;
-
-    public boolean trySkipNil() throws IOException;
-
-    public int readArrayHeader() throws IOException;
-
-    public int readMapHeader() throws IOException;
-
-    public UnpackerIterator iterator();
-
-    //public void feed(data) throws IOException;
+public enum ValueType {
+    NIL, BOOLEAN, INTEGER, FLOAT, ARRAY, MAP, RAW;
 }
-

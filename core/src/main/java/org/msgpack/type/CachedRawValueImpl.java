@@ -21,21 +21,12 @@ import java.io.UnsupportedEncodingException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.nio.ByteBuffer;
-import org.msgpack.packer.Packer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
+import org.msgpack.packer.Packer;
 import org.msgpack.MessageTypeException;
-import org.msgpack.type.Value;
-import org.msgpack.type.ValueType;
-import org.msgpack.type.NilValue;
-import org.msgpack.type.BooleanValue;
-import org.msgpack.type.IntegerValue;
-import org.msgpack.type.FloatValue;
-import org.msgpack.type.ArrayValue;
-import org.msgpack.type.MapValue;
-import org.msgpack.type.RawValue;
 
 public class CachedRawValueImpl extends AbstractRawValue {
     // See constructors:
@@ -68,7 +59,7 @@ public class CachedRawValueImpl extends AbstractRawValue {
     }
 
     @Override
-    public String getString() {
+    public String getString() throws CharacterCodingException {
         if(string == null) {
             if(codingException != null) {
                 throw codingException;
@@ -80,7 +71,7 @@ public class CachedRawValueImpl extends AbstractRawValue {
                 string = decoder.decode(ByteBuffer.wrap(bytes)).toString();
                 normalizedString = string;
             } catch (CharacterCodingException ex) {
-                codingException = new MessageTypeException(ex);
+                codingException = ex;
                 throw codingException;
             }
         }
@@ -97,11 +88,11 @@ public class CachedRawValueImpl extends AbstractRawValue {
                 normalizedString = decoder.decode(ByteBuffer.wrap(bytes)).toString();
             } catch (CharacterCodingException ex) {
                 // never comes here, though
-                codingException = new MessageTypeException(ex);
+                codingException = ex;
                 normalizedString = new String(bytes);
             }
-            return normalizedString;
         }
+            return normalizedString;
     }
 
     @Override
@@ -130,8 +121,8 @@ public class CachedRawValueImpl extends AbstractRawValue {
         //   String.equals(String) is faster than Arrays.equals(byte[], byte[])
         if (v.getClass() == CachedRawValueImpl.class) {
             CachedRawValueImpl rv = (CachedRawValueImpl) v;
-            if(string != null || rv.string != null) {
-                return getString().equals(rv.getString());
+            if(string != null && rv.string != null) {
+                string.equals(rv.string);
             }
         }
 
