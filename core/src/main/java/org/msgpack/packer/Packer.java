@@ -22,6 +22,65 @@ import java.io.IOException;
 import java.io.Closeable;
 import java.io.Flushable;
 
-public interface Packer {
+/**
+ * Packer is an interface to serialize objects into an internal buffer,
+ * which implements Buffer interface.
+ */
+public interface Packer extends Closeable, Flushable {
+    public Packer write(boolean o) throws IOException;
+
+    public Packer write(byte o) throws IOException;
+
+    public Packer write(short o) throws IOException;
+
+    public Packer write(int o) throws IOException;
+
+    public Packer write(long o) throws IOException;
+
+    public Packer write(float o) throws IOException;
+
+    public Packer write(double o) throws IOException;
+
+    public Packer write(Boolean o) throws IOException;
+
+    public Packer write(Byte o) throws IOException;
+
+    public Packer write(Short o) throws IOException;
+
+    public Packer write(Integer o) throws IOException;
+
+    public Packer write(Long o) throws IOException;
+
+    public Packer write(Float o) throws IOException;
+
+    public Packer write(Double o) throws IOException;
+
+    public Packer write(BigInteger o) throws IOException;
+
+    public Packer write(byte[] o) throws IOException;
+
+    public Packer write(byte[] o, int off, int len) throws IOException;
+
+    public Packer write(ByteBuffer o) throws IOException;
+
+    public Packer write(String o) throws IOException;
+
+    public Packer write(Value v) throws IOException;
+
+    public Packer write(Object o) throws IOException;
+
+    public Packer writeNil() throws IOException;
+
+    public Packer writeArrayHeader(int size) throws IOException;
+
+    public Packer writeMapHeader(int size) throws IOException;
+
+    //public void clear();
+    //
+    //public int size();
+    //
+    //public boolean isEmpty();
+    //
+    //transferTo
 }
 

@@ -18,21 +18,22 @@
 package org.msgpack.unpacker;
 
 import java.io.IOException;
-import java.io.Closeable;
 
-public interface Unpacker extends Closeable {
-    public Value read() throws IOException;
+public class UnpackException extends IOException {
+    public UnpackException() {
+        super();
+    }
 
-    public void skip() throws IOException;
+    public UnpackException(String message) {
+        super(message);
+    }
 
-    public boolean trySkipNil() throws IOException;
+    public UnpackException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    public int readArrayHeader() throws IOException;
-
-    public int readMapHeader() throws IOException;
-
-    public UnpackerIterator iterator();
-
-    //public void feed(data) throws IOException;
+    public UnpackException(Throwable cause) {
+        super(cause);
+    }
 }
 

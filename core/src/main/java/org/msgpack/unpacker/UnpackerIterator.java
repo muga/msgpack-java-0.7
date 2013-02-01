@@ -18,21 +18,36 @@
 package org.msgpack.unpacker;
 
 import java.io.IOException;
-import java.io.Closeable;
+import java.io.EOFException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import org.msgpack.type.Value;
 
-public interface Unpacker extends Closeable {
-    public Value read() throws IOException;
+public class UnpackerIterator implements Iterator<Value> {
+    private IOException exception;
 
-    public void skip() throws IOException;
+    public boolean hasNext() {
+        // TODO
+        return true;
+    }
 
-    public boolean trySkipNil() throws IOException;
+    public Value next() {
+        // TODO
+        return null;
+    }
 
-    public int readArrayHeader() throws IOException;
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
 
-    public int readMapHeader() throws IOException;
+    public IOException getException() {
+        return exception;
+    }
 
-    public UnpackerIterator iterator();
-
-    //public void feed(data) throws IOException;
+    public void throwException() throws IOException {
+        if(exception != null) {
+            throw exception;
+        }
+    }
 }
 
