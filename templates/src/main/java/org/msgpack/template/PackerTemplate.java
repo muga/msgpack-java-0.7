@@ -20,7 +20,7 @@ package org.msgpack.template;
 import java.io.IOException;
 import org.msgpack.packer.Packer;
 
-public interface PackerTemplate<T> {
+public interface PackerTemplate<T> extends Template<T> {
     public void write(Packer pk, T v) throws IOException;
 
     public void write(Packer pk, T v, boolean required) throws IOException;

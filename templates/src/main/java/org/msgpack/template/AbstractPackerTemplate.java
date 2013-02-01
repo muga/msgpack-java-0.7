@@ -22,7 +22,7 @@ import org.msgpack.packer.Packer;
 
 public abstract class AbstractPackerTemplate<T> implements PackerTemplate<T> {
 
-    public void write(Packer pk, T v) throws IOException {
-        write(pk, v, false);
+    public void write(Packer packer, T v) throws IOException {
+        write(packer, v, false);
     }
 }

@@ -20,7 +20,7 @@ package org.msgpack.template;
 import java.io.IOException;
 import org.msgpack.unpacker.Unpacker;
 
-public interface UnpackerTemplate<T> {
+public interface UnpackerTemplate<T> extends Template<T> {
     public T read(Unpacker u, T to) throws IOException;
 
     public T read(Unpacker u, T to, boolean required) throws IOException;
