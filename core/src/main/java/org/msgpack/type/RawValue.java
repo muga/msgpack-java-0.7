@@ -22,5 +22,6 @@ public interface RawValue extends Value {
 
     public String getString();
 
+    // string() doesn't throw CharacterCodingException
     public String string();
 }
