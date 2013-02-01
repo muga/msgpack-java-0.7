@@ -39,6 +39,7 @@ public interface Unpacker extends Closeable {
 
     //public void feed(data) throws IOException;
 
+    public Value readValue() throws IOException; // TODO is it needed??
     public boolean readBoolean() throws IOException;
     public byte readByte() throws IOException;
     public short readShort() throws IOException;
