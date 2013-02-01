@@ -19,6 +19,9 @@ package org.msgpack.unpacker;
 
 import java.io.IOException;
 import java.io.Closeable;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+
 import org.msgpack.type.Value;
 
 public interface Unpacker extends Closeable {
@@ -35,5 +38,17 @@ public interface Unpacker extends Closeable {
     public UnpackerIterator iterator();
 
     //public void feed(data) throws IOException;
+
+    public boolean readBoolean() throws IOException;
+    public byte readByte() throws IOException;
+    public short readShort() throws IOException;
+    public int readInt() throws IOException;
+    public long readLong() throws IOException;
+    public double readDouble() throws IOException;
+    public float readFloat() throws IOException;
+    public String readString() throws IOException;
+    public byte[] readByteArray() throws IOException;
+    public ByteBuffer readByteBuffer() throws IOException;
+    public BigInteger readBigInteger() throws IOException;
 }
 
