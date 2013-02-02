@@ -20,12 +20,15 @@ package org.msgpack.unpacker;
 import java.io.IOException;
 import java.io.Closeable;
 import java.math.BigInteger;
+import org.msgpack.type.ValueType;
 import org.msgpack.unpacker.accept.Accept;
 
 public interface Unpacker extends Closeable {
     public void readToken(Accept accept) throws IOException;
 
     //public void skip() throws IOException;
+
+    public ValueType getNextType() throws IOException;
 
     public boolean trySkipNil() throws IOException;
 

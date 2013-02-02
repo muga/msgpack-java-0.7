@@ -33,8 +33,8 @@ public class BufferUnpackerChannel implements UnpackerChannel {
         this.castBlock = ByteBuffer.wrap(castBlockArray);
     }
 
-    public int read(ByteBuffer dst) throws IOException {
-        return buffer.read(dst);
+    public int read(byte[] b, int off, int len) throws IOException {
+        return buffer.read(b, off, len);
     }
 
     public int skip(int n) throws IOException {

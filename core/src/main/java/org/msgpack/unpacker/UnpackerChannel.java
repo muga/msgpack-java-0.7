@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public interface UnpackerChannel {
-    public int read(ByteBuffer dst) throws IOException;
+    public int read(byte[] b, int off, int len) throws IOException;
 
     public int skip(int n) throws IOException;
 

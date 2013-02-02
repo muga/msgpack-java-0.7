@@ -18,8 +18,10 @@
 package org.msgpack.unpacker;
 
 import java.io.IOException;
+import java.io.EOFException;
 import java.math.BigInteger;
 import org.msgpack.buffer.Buffer;
+import org.msgpack.type.ValueType;
 import org.msgpack.unpacker.accept.Accept;
 import org.msgpack.unpacker.accept.IntAccept;
 import org.msgpack.unpacker.accept.LongAccept;
@@ -79,6 +81,7 @@ public class MessageUnpacker implements Unpacker {
         return b;
     }
 
+    @Override
     public void readToken(Accept a) throws IOException {
         if(raw != null) {
             readRawBodyCont();
@@ -268,7 +271,7 @@ public class MessageUnpacker implements Unpacker {
             // System.out.println("unknown b "+(b&0xff));
             // headByte = CS_INVALID
             //resetHeadByte();
-            throw new IOException("Invalid byte: " + b); // TODO error FormatException
+            throw new IOException("Invalid MessagePack format: " + b);
         }
     }
 
@@ -303,65 +306,134 @@ public class MessageUnpacker implements Unpacker {
         checkRawSize(size);
         this.raw = new byte[size];
         this.rawFilled = 0;
-        // TODO
+        readRawBodyCont();
     }
 
     private void readRawBodyCont() throws IOException {
-        // TODO
+        int len = ch.read(raw, rawFilled, raw.length - rawFilled);
+        rawFilled += len;
+        if (rawFilled < raw.length) {
+            throw new EOFException();
+        }
     }
 
+    @Override
     public boolean trySkipNil() throws IOException {
-        // TODO
+        int b = getHeadByte();
+        if(b == 0xc0) {
+            resetHeadByte();
+            return true;
+        }
         return false;
     }
 
+    @Override
     public int readInt() throws IOException {
         readToken(intAccept);
         return intAccept.getValue();
     }
 
+    @Override
     public long readLong() throws IOException {
         readToken(longAccept);
         return longAccept.getValue();
     }
 
+    @Override
     public BigInteger readBigInteger() throws IOException {
         readToken(bigIntegerAccept);
         return bigIntegerAccept.getValue();
     }
 
+    @Override
     public double readDouble() throws IOException {
         readToken(doubleAccept);
         return doubleAccept.getValue();
     }
 
+    @Override
     public boolean readBoolean() throws IOException {
         readToken(booleanAccept);
         return booleanAccept.getValue();
     }
 
+    @Override
     public void readNil() throws IOException {
         readToken(nilAccept);
     }
 
+    @Override
     public byte[] readByteArray() throws IOException {
         readToken(byteArrayAccept);
         return byteArrayAccept.getValue();
     }
 
+    @Override
     public String readString() throws IOException {
         readToken(stringAccept);
         return stringAccept.getValue();
     }
 
+    @Override
     public int readArrayHeader() throws IOException {
         readToken(arrayAccept);
         return arrayAccept.getSize();
     }
 
+    @Override
     public int readMapHeader() throws IOException {
         readToken(mapAccept);
         return mapAccept.getSize();
+    }
+
+    @Override
+    public ValueType getNextType() throws IOException {
+        final int b = (int) getHeadByte();
+        if ((b & 0x80) == 0) { // Positive Fixnum
+            return ValueType.INTEGER;
+        }
+        if ((b & 0xe0) == 0xe0) { // Negative Fixnum
+            return ValueType.INTEGER;
+        }
+        if ((b & 0xe0) == 0xa0) { // FixRaw
+            return ValueType.RAW;
+        }
+        if ((b & 0xf0) == 0x90) { // FixArray
+            return ValueType.ARRAY;
+        }
+        if ((b & 0xf0) == 0x80) { // FixMap
+            return ValueType.MAP;
+        }
+        switch (b & 0xff) {
+        case 0xc0: // nil
+            return ValueType.NIL;
+        case 0xc2: // false
+        case 0xc3: // true
+            return ValueType.BOOLEAN;
+        case 0xca: // float
+        case 0xcb: // double
+            return ValueType.FLOAT;
+        case 0xcc: // unsigned int 8
+        case 0xcd: // unsigned int 16
+        case 0xce: // unsigned int 32
+        case 0xcf: // unsigned int 64
+        case 0xd0: // signed int 8
+        case 0xd1: // signed int 16
+        case 0xd2: // signed int 32
+        case 0xd3: // signed int 64
+            return ValueType.INTEGER;
+        case 0xda: // raw 16
+        case 0xdb: // raw 32
+            return ValueType.RAW;
+        case 0xdc: // array 16
+        case 0xdd: // array 32
+            return ValueType.ARRAY;
+        case 0xde: // map 16
+        case 0xdf: // map 32
+            return ValueType.MAP;
+        default:
+            throw new MessageFormatException("Invalid MessagePack format: " + b);
+        }
     }
 
     public void close() throws IOException {
