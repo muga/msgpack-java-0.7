@@ -20,6 +20,8 @@ package org.msgpack.unpacker.accept;
 import org.msgpack.MessageTypeException;
 
 public abstract class AbstractAccept implements Accept {
+    private static final byte[] EMPTY = new byte[0];
+
     @Override
     public void acceptNil() {
         throw new MessageTypeException("Unexpected nil value");
@@ -52,7 +54,7 @@ public abstract class AbstractAccept implements Accept {
 
     @Override
     public void acceptEmptyByteArray() {
-        throw new MessageTypeException("Unexpected raw value");
+        acceptByteArray(EMPTY);
     }
 
     @Override

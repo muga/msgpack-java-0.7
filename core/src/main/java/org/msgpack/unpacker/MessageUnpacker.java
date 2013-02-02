@@ -21,6 +21,13 @@ import java.io.IOException;
 import org.msgpack.buffer.Buffer;
 import org.msgpack.unpacker.accept.Accept;
 import org.msgpack.unpacker.accept.IntAccept;
+import org.msgpack.unpacker.accept.LongAccept;
+import org.msgpack.unpacker.accept.BigIntegerAccept;
+import org.msgpack.unpacker.accept.DoubleAccept;
+import org.msgpack.unpacker.accept.ByteArrayAccept;
+import org.msgpack.unpacker.accept.StringAccept;
+import org.msgpack.unpacker.accept.ArrayAccept;
+import org.msgpack.unpacker.accept.MapAccept;
 
 public class MessageUnpacker implements Unpacker {
     private Buffer buffer;
@@ -34,6 +41,15 @@ public class MessageUnpacker implements Unpacker {
 
     private byte[] raw;
     private int rawFilled;
+
+    private final IntAccept intAccept = new IntAccept();
+    private final LongAccept longAccept = new LongAccept();
+    private final BigIntegerAccept bigIntegerAccept = new BigIntegerAccept();
+    private final DoubleAccept doubleAccept = new DoubleAccept();
+    private final ByteArrayAccept byteArrayAccept = new ByteArrayAccept();
+    private final StringAccept stringAccept = new StringAccept();
+    private final ArrayAccept arrayAccept = new ArrayAccept();
+    private final MapAccept mapAccept = new MapAccept();
 
     public MessageUnpacker(Buffer buffer) {
         this.buffer = buffer;

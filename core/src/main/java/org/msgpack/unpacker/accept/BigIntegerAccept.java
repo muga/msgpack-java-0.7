@@ -17,34 +17,31 @@
 //
 package org.msgpack.unpacker.accept;
 
-import org.msgpack.MessageTypeException;
+import java.math.BigInteger;
 
-public class IntAccept extends AbstractAccept {
-    private int value;
+public class BigIntegerAccept extends AbstractAccept {
+    private BigInteger value;
 
-    public int getValue() {
+    public BigInteger getValue() {
         return value;
     }
 
     @Override
     public void acceptInt(int v) {
-        this.value = v;
+        this.value = BigInteger.valueOf((long) v);
     }
 
     @Override
     public void acceptLong(long v) {
-        if (value < (long) Integer.MIN_VALUE || value > (long) Integer.MAX_VALUE) {
-            throw new MessageTypeException("Expected int but got integer larger than "+Integer.MAX_VALUE+" or smaller than "+Integer.MIN_VALUE);
-        }
-        this.value = (int) v;
+        this.value = BigInteger.valueOf(v);
     }
 
     @Override
     public void acceptUnsignedLong(long v) {
-        if (v < 0 || v > (long) Integer.MAX_VALUE) {
-            throw new MessageTypeException("Expected int but got integer larger than "+Integer.MAX_VALUE+" or smaller than "+Integer.MIN_VALUE);
+        if (v < 0L) {
+            this.value = BigInteger.valueOf(v + Long.MAX_VALUE + 1L).setBit(63);
+        } else {
+            this.value = BigInteger.valueOf(v);
         }
-        this.value = (int) v;
     }
 }
-

@@ -19,32 +19,28 @@ package org.msgpack.unpacker.accept;
 
 import org.msgpack.MessageTypeException;
 
-public class IntAccept extends AbstractAccept {
-    private int value;
+public class LongAccept extends AbstractAccept {
+    private long value;
 
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 
     @Override
     public void acceptInt(int v) {
-        this.value = v;
+        this.value = (long) v;
     }
 
     @Override
     public void acceptLong(long v) {
-        if (value < (long) Integer.MIN_VALUE || value > (long) Integer.MAX_VALUE) {
-            throw new MessageTypeException("Expected int but got integer larger than "+Integer.MAX_VALUE+" or smaller than "+Integer.MIN_VALUE);
-        }
-        this.value = (int) v;
+        this.value = v;
     }
 
     @Override
     public void acceptUnsignedLong(long v) {
-        if (v < 0 || v > (long) Integer.MAX_VALUE) {
-            throw new MessageTypeException("Expected int but got integer larger than "+Integer.MAX_VALUE+" or smaller than "+Integer.MIN_VALUE);
+        if (v < 0L) {
+            throw new MessageTypeException(); // TODO message
         }
-        this.value = (int) v;
+        this.value = v;
     }
 }
-
