@@ -41,13 +41,15 @@ public interface Buffer extends Closeable, Flushable {
 
     public void write(ByteBuffer src) throws IOException;
 
+    public byte read() throws IOException;
+
     public int read(ByteBuffer dst) throws IOException;
 
     public int readAll(ByteBuffer dst) throws IOException;
 
-    public int skip(ByteBuffer dst) throws IOException;
+    public int skip(int n) throws IOException;
 
-    public int skipAll(ByteBuffer dst) throws IOException;
+    public int skipAll(int n) throws IOException;
 
     public int transferTo(WritableByteChannel dst) throws IOException;
 }
