@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.nio.ByteBuffer;
-import org.msgpack.type.Value;
 
 /**
  * Packer is an interface to serialize objects into an internal buffer,
@@ -66,8 +65,6 @@ public interface Packer extends Closeable, Flushable {
     public Packer write(ByteBuffer o) throws IOException;
 
     public Packer write(String o) throws IOException;
-
-    public Packer write(Value v) throws IOException;
 
     public Packer writeNil() throws IOException;
 

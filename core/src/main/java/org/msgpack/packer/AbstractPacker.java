@@ -20,7 +20,6 @@ package org.msgpack.packer;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
-import org.msgpack.type.Value;
 
 public abstract class AbstractPacker implements Packer {
     @Override
@@ -181,16 +180,6 @@ public abstract class AbstractPacker implements Packer {
             writeNil();
         } else {
             writeString(o);
-        }
-        return this;
-    }
-
-    @Override
-    public Packer write(Value v) throws IOException {
-        if (v == null) {
-            writeNil();
-        } else {
-            v.writeTo(this);
         }
         return this;
     }
