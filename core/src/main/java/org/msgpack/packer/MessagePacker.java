@@ -24,8 +24,8 @@ import java.nio.ByteBuffer;
 import org.msgpack.buffer.Buffer;
 
 public class MessagePacker extends AbstractPacker {
-    public Buffer buffer;
-    public PackerChannel ch;
+    private Buffer buffer;
+    private PackerChannel ch;
 
     public MessagePacker(Buffer buffer) {
         this.buffer = buffer;

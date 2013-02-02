@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import org.msgpack.buffer.Buffer;
 
-public class BufferUnpackerChannel {
+public class BufferUnpackerChannel implements UnpackerChannel {
     private Buffer buffer;
 
     private byte[] castBlockArray;

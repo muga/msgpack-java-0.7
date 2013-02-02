@@ -15,24 +15,33 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.unpacker;
+package org.msgpack.unpacker.accept;
 
-import java.io.IOException;
-import java.io.Closeable;
+public interface Accept {
+    public void acceptBoolean(boolean v);
 
-public interface Unpacker extends Closeable {
-    //public Value read() throws IOException;
+    public void acceptInteger(byte v);
 
-    //public void skip() throws IOException;
+    public void acceptInteger(int v);
 
-    public boolean trySkipNil() throws IOException;
+    public void acceptInteger(short v);
 
-    public int readArrayHeader() throws IOException;
+    public void acceptInteger(long v);
 
-    public int readMapHeader() throws IOException;
+    public void acceptIntegerUnsigned64(long v);
 
-    //public UnpackerIterator iterator();
-    //
-    //public void feed(data) throws IOException;
+    public void acceptRaw(byte[] raw);
+
+    public void acceptEmptyRaw();
+
+    public void acceptNil();
+
+    public void acceptFloat(float v);
+
+    public void acceptFloat(double v);
+
+    public void acceptArrayHeader(int size);
+
+    public void acceptMapHeader(int size);
 }
 
