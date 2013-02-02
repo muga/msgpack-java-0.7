@@ -22,6 +22,8 @@ import java.util.ArrayDeque;
 import java.io.IOException;
 import java.io.EOFException;
 import java.nio.ByteBuffer;
+import org.msgpack.packer.PackerChannel;
+import org.msgpack.unpacker.UnpackerChannel;
 
 public class LinkedBuffer {
     private static ByteBuffer EMPTY = ByteBuffer.allocate(0);
@@ -112,7 +114,7 @@ public class LinkedBuffer {
         return result;
     }
 
-    public void read(byte[] b, int off, int len) throws IOException {
+    public void readAll(byte[] b, int off, int len) throws IOException {
         while(true) {
             ByteBuffer src = ensureReadableSize(1);
             if(len < src.remaining()) {
@@ -127,12 +129,12 @@ public class LinkedBuffer {
         }
     }
 
-    public void read(ByteBuffer dst) throws IOException {
+    public void readAll(ByteBuffer dst) throws IOException {
         // TODO
         throw new UnsupportedOperationException("not implemented yet");
     }
 
-    public void skip(int len) throws IOException {
+    public void skipAll(int len) throws IOException {
         while(true) {
             ByteBuffer src = ensureReadableSize(1);
             if(len < src.remaining()) {
@@ -146,6 +148,43 @@ public class LinkedBuffer {
         }
     }
 
+    public int read(byte[] b, int off, int len) throws IOException {
+        int n = len;
+        while(true) {
+            ByteBuffer src = link.peekFirst();
+            int srcrem = src.remaining();
+
+            if(n <= srcrem) {
+                src.get(b, off, n);
+                return len;
+            }
+            src.get(b, off, srcrem);
+            off += srcrem;
+            n -= srcrem;
+
+            removeFirstLink();
+
+            if(link.isEmpty()) {
+                if(!tryMoveLastToLink()) {
+                    if(n == len) {
+                        return -1;
+                    }
+                    return len - n;
+                }
+            }
+        }
+    }
+
+    public int read(ByteBuffer dst) throws IOException {
+        // TODO
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public int skip(int len) throws IOException {
+        // TODO
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
     private ByteBuffer ensureWritableSize(int n) throws IOException {
         assert(n <= 9);
 
@@ -155,13 +194,33 @@ public class LinkedBuffer {
 
         ByteBuffer bb = allocateBuffer();
         if(last != null) {
-            last.limit(last.position());
-            last.position(0);
-            link.addLast(last);
+            moveLastToLink();
         }
         last = bb;
 
         return bb;
+    }
+
+    private ByteBuffer moveLastToLink() throws IOException {
+        ByteBuffer bb = last;
+        if(bb.position() > 0) {
+            bb.limit(bb.position());
+            bb.position(0);
+            link.addLast(bb);
+        }
+        last = null;
+        return bb;
+    }
+
+    private boolean tryMoveLastToLink() throws IOException {
+        if(last != null && last.position() > 0) {
+            last.limit(last.position());
+            last.position(0);
+            link.addLast(last);
+            last = null;
+            return true;
+        }
+        return false;
     }
 
     private ByteBuffer ensureReadableSize(int n) throws IOException {
@@ -194,11 +253,8 @@ public class LinkedBuffer {
                 removeFirstLink();
             }
 
-            last = null;
-            bb.limit(bb.position());
-            bb.position(0);
+            bb = moveLastToLink();
             bb.get(accumulator, off, n);
-            link.addLast(bb);
 
             return accumulatorBuffer;
         }
@@ -208,16 +264,139 @@ public class LinkedBuffer {
 
     private void removeFirstLink() {
         ByteBuffer bb = link.removeFirst();
-        if(link.isEmpty() && last == null) {
+        if(last == null) {
             bb.position(0);
             bb.limit(bb.capacity());
             last = bb;
+        } else {
+            releaseBuffer(bb);
         }
     }
 
     private ByteBuffer allocateBuffer() {
         // TODO
         return ByteBuffer.allocateDirect(512);
+    }
+
+    private void releaseBuffer(ByteBuffer bb) {
+    }
+
+    public PackerChannel getPackerChannelView() {
+        return new PackerChannelView();
+    }
+
+    public UnpackerChannel getUnpackerChannelView() {
+        return new UnpackerChannelView();
+    }
+
+    private class PackerChannelView implements PackerChannel {
+        public void writeByteArray(byte[] b, int off, int len) throws IOException {
+            write(b, off, len);
+        }
+
+        public void writeByteBuffer(ByteBuffer bb) throws IOException {
+            write(bb);
+        }
+
+        public void writeByte(byte v) throws IOException {
+            write(v);
+        }
+
+        public void writeShort(short v) throws IOException {
+            ensureWritableSize(2).putShort(v);
+        }
+
+        public void writeInt(int v) throws IOException {
+            ensureWritableSize(4).putInt(v);
+        }
+
+        public void writeLong(long v) throws IOException {
+            ensureWritableSize(8).putLong(v);
+        }
+
+        public void writeFloat(float v) throws IOException {
+            ensureWritableSize(4).putFloat(v);
+        }
+
+        public void writeDouble(double v) throws IOException {
+            ensureWritableSize(8).putDouble(v);
+        }
+
+        public void writeByteAndByte(byte b, byte v) throws IOException {
+            ByteBuffer dst = ensureWritableSize(3);
+            dst.put(b);
+            dst.put(v);
+        }
+
+        public void writeByteAndShort(byte b, short v) throws IOException {
+            ByteBuffer dst = ensureWritableSize(3);
+            dst.put(b);
+            dst.putShort(v);
+        }
+
+        public void writeByteAndInt(byte b, int v) throws IOException {
+            ByteBuffer dst = ensureWritableSize(5);
+            dst.put(b);
+            dst.putInt(v);
+        }
+
+        public void writeByteAndLong(byte b, long v) throws IOException {
+            ByteBuffer dst = ensureWritableSize(9);
+            dst.put(b);
+            dst.putLong(v);
+        }
+
+        public void writeByteAndFloat(byte b, float v) throws IOException {
+            ByteBuffer dst = ensureWritableSize(5);
+            dst.put(b);
+            dst.putFloat(v);
+        }
+
+        public void writeByteAndDouble(byte b, double v) throws IOException {
+            ByteBuffer dst = ensureWritableSize(9);
+            dst.put(b);
+            dst.putDouble(v);
+        }
+
+        public void flush() throws IOException {
+        }
+
+        public void close() throws IOException {
+        }
+    }
+
+    private class UnpackerChannelView implements UnpackerChannel {
+        public int read(byte[] b, int off, int len) throws IOException {
+            return LinkedBuffer.this.read(b, off, len);
+        }
+
+        public int skip(int n) throws IOException {
+            return LinkedBuffer.this.skip(n);
+        }
+
+        public byte readByte() throws IOException {
+            return LinkedBuffer.this.read();
+        }
+
+        public short readShort() throws IOException {
+            return LinkedBuffer.this.ensureReadableSize(2).getShort();
+        }
+
+        public int readInt() throws IOException {
+            return LinkedBuffer.this.ensureReadableSize(4).getInt();
+        }
+
+        public long readLong() throws IOException {
+            return LinkedBuffer.this.ensureReadableSize(8).getLong();
+        }
+
+        public float readFloat() throws IOException {
+            return LinkedBuffer.this.ensureReadableSize(4).getFloat();
+        }
+
+        public double readDouble() throws IOException {
+            return LinkedBuffer.this.ensureReadableSize(8).getDouble();
+        }
     }
 }
 
