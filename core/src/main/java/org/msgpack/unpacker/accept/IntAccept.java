@@ -22,23 +22,17 @@ import org.msgpack.MessageTypeException;
 final public class IntAccept extends AbstractAccept {
     int value;
 
-    @Override
-    public void acceptInteger(byte v) {
-        this.value = (int) v;
+    public int getValue() {
+        return value;
     }
 
     @Override
-    public void acceptInteger(short v) {
-        this.value = (int) v;
-    }
-
-    @Override
-    public void acceptInteger(int v) {
+    public void acceptInt(int v) {
         this.value = v;
     }
 
     @Override
-    public void acceptInteger(long v) {
+    public void acceptLong(long v) {
         if (value < (long) Integer.MIN_VALUE || value > (long) Integer.MAX_VALUE) {
             throw new MessageTypeException("Expected int but got integer larger than "+Integer.MAX_VALUE+" or smaller than "+Integer.MIN_VALUE);
         }
@@ -46,7 +40,7 @@ final public class IntAccept extends AbstractAccept {
     }
 
     @Override
-    public void acceptIntegerUnsigned64(long v) {
+    public void acceptUnsignedLong(long v) {
         if (v < 0 || v > (long) Integer.MAX_VALUE) {
             throw new MessageTypeException("Expected int but got integer larger than "+Integer.MAX_VALUE+" or smaller than "+Integer.MIN_VALUE);
         }

@@ -20,54 +20,57 @@ package org.msgpack.unpacker.accept;
 import org.msgpack.MessageTypeException;
 
 public abstract class AbstractAccept implements Accept {
-    public void acceptBoolean(boolean v) {
-        throw new MessageTypeException("Unexpected boolean value");
-    }
-
-    public void acceptInteger(byte v) {
-        throw new MessageTypeException("Unexpected integer value");
-    }
-
-    public void acceptInteger(int v) {
-        throw new MessageTypeException("Unexpected integer value");
-    }
-
-    public void acceptInteger(short v) {
-        throw new MessageTypeException("Unexpected integer value");
-    }
-
-    public void acceptInteger(long v) {
-        throw new MessageTypeException("Unexpected integer value");
-    }
-
-    public void acceptIntegerUnsigned64(long v) {
-        throw new MessageTypeException("Unexpected integer value");
-    }
-
-    public void acceptRaw(byte[] raw) {
-        throw new MessageTypeException("Unexpected raw value");
-    }
-
-    public void acceptEmptyRaw() {
-        throw new MessageTypeException("Unexpected raw value");
-    }
-
+    @Override
     public void acceptNil() {
         throw new MessageTypeException("Unexpected nil value");
     }
 
+    @Override
+    public void acceptBoolean(boolean v) {
+        throw new MessageTypeException("Unexpected boolean value");
+    }
+
+    @Override
+    public void acceptInt(int v) {
+        throw new MessageTypeException("Unexpected integer value");
+    }
+
+    @Override
+    public void acceptLong(long v) {
+        throw new MessageTypeException("Unexpected integer value");
+    }
+
+    @Override
+    public void acceptUnsignedLong(long v) {
+        throw new MessageTypeException("Unexpected integer value");
+    }
+
+    @Override
+    public void acceptByteArray(byte[] raw) {
+        throw new MessageTypeException("Unexpected raw value");
+    }
+
+    @Override
+    public void acceptEmptyByteArray() {
+        throw new MessageTypeException("Unexpected raw value");
+    }
+
+    @Override
     public void acceptFloat(float v) {
         throw new MessageTypeException("Unexpected float value");
     }
 
-    public void acceptFloat(double v) {
+    @Override
+    public void acceptDouble(double v) {
         throw new MessageTypeException("Unexpected float value");
     }
 
+    @Override
     public void acceptArrayHeader(int size) {
         throw new MessageTypeException("Unexpected array value");
     }
 
+    @Override
     public void acceptMapHeader(int size) {
         throw new MessageTypeException("Unexpected map value");
     }

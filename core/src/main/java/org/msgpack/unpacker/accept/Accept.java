@@ -18,27 +18,23 @@
 package org.msgpack.unpacker.accept;
 
 public interface Accept {
+    public void acceptNil();
+
     public void acceptBoolean(boolean v);
 
-    public void acceptInteger(byte v);
+    public void acceptInt(int v);
 
-    public void acceptInteger(int v);
+    public void acceptLong(long v);
 
-    public void acceptInteger(short v);
+    public void acceptUnsignedLong(long v);
 
-    public void acceptInteger(long v);
+    public void acceptByteArray(byte[] raw);
 
-    public void acceptIntegerUnsigned64(long v);
-
-    public void acceptRaw(byte[] raw);
-
-    public void acceptEmptyRaw();
-
-    public void acceptNil();
+    public void acceptEmptyByteArray();
 
     public void acceptFloat(float v);
 
-    public void acceptFloat(double v);
+    public void acceptDouble(double v);
 
     public void acceptArrayHeader(int size);
 

@@ -17,25 +17,21 @@
 //
 package org.msgpack.unpacker;
 
-import java.io.IOException;
-import java.io.Closeable;
-import org.msgpack.unpacker.accept.Accept;
+public class MessageSizeException extends UnpackException {
+    public MessageSizeException() {
+        super();
+    }
 
-public interface Unpacker extends Closeable {
-    public void readToken(Accept accept) throws IOException;
+    public MessageSizeException(String message) {
+        super(message);
+    }
 
-    //public Value read() throws IOException;
+    public MessageSizeException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    //public void skip() throws IOException;
-
-    public boolean trySkipNil() throws IOException;
-
-    public int readArrayHeader() throws IOException;
-
-    public int readMapHeader() throws IOException;
-
-    //public UnpackerIterator iterator();
-    //
-    //public void feed(data) throws IOException;
+    public MessageSizeException(Throwable cause) {
+        super(cause);
+    }
 }
 
