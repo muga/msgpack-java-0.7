@@ -20,23 +20,72 @@ package org.msgpack.unpacker;
 import java.lang.Iterable;
 import java.io.IOException;
 import java.io.Closeable;
-import org.msgpack.type.Value;
+import org.msgpack.value.Value;
+import org.msgpack.value.ValueAllocator;
+import org.msgpack.unpacker.accept.Accept;
 
 public class ValueReader implements Closeable, Iterable<Value> {
     private Unpacker unpacker;
+    private UnpackerStack stack;
+    private ValueReaderAccept accept;
+    private Value result;
+
+    private ValueAllocator allocator;
+
+    private class ValueReaderAccept implements Accept {
+        public void acceptNil() {
+            if(stack.isEmpty()) {
+                result = allocator.createNilValue();
+            }
+        }
+
+        public void acceptBoolean(boolean v) {
+        }
+
+        public void acceptInt(int v) {
+        }
+
+        public void acceptLong(long v) {
+        }
+
+        public void acceptUnsignedLong(long v) {
+        }
+
+        public void acceptByteArray(byte[] raw) {
+        }
+
+        public void acceptEmptyByteArray() {
+        }
+
+        public void acceptFloat(float v) {
+        }
+
+        public void acceptDouble(double v) {
+        }
+
+        public void acceptArrayHeader(int size) {
+        }
+
+        public void acceptMapHeader(int size) {
+        }
+    }
 
     public ValueReader(Unpacker unpacker) {
         this.unpacker = unpacker;
+        this.stack = new UnpackerStack();
+        this.accept = new ValueReaderAccept();
     }
 
     public Value read() throws IOException {
-        // TODO
-        return null;
+        result = null;
+        do {
+            unpacker.readToken(accept);
+        } while(result == null);
+        return result;
     }
 
     public ValueReaderIterator iterator() {
-        // TODO
-        return null;
+        return new ValueReaderIterator(this);
     }
 
     public void close() throws IOException {

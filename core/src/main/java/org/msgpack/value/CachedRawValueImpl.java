@@ -46,8 +46,30 @@ public class CachedRawValueImpl extends AbstractRawValue {
         this.normalizedString = string;
     }
 
-    public CachedRawValueImpl(byte[] bytes) {
-        this.bytes = bytes;
+    public CachedRawValueImpl(byte[] bytes, boolean gift) {
+        if (gift) {
+            this.bytes = bytes;
+        } else {
+            this.bytes = new byte[bytes.length];
+            System.arraycopy(bytes, 0, this.bytes, 0, bytes.length);
+        }
+    }
+
+    public CachedRawValueImpl(byte[] b, int off, int len) {
+        this.bytes = new byte[len];
+        System.arraycopy(b, off, this.bytes, 0, len);
+    }
+
+    private static final CachedRawValueImpl EMPTY;
+
+    static {
+        EMPTY = new CachedRawValueImpl(new byte[0], true);
+        EMPTY.string = "";
+        EMPTY.normalizedString = "";
+    }
+
+    public static CachedRawValueImpl getEmptyInstance() {
+        return EMPTY;
     }
 
     @Override

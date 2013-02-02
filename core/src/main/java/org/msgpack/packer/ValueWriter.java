@@ -18,9 +18,9 @@
 package org.msgpack.packer;
 
 import java.io.IOException;
-import org.msgpack.type.Value;
 import java.io.Closeable;
 import java.io.Flushable;
+import org.msgpack.value.Value;
 
 public class ValueWriter implements Closeable, Flushable {
     private Packer packer;

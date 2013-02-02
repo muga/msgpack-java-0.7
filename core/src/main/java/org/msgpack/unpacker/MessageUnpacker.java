@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.EOFException;
 import java.math.BigInteger;
 import org.msgpack.buffer.Buffer;
-import org.msgpack.type.ValueType;
+import org.msgpack.value.ValueType;
 import org.msgpack.unpacker.accept.Accept;
 import org.msgpack.unpacker.accept.IntAccept;
 import org.msgpack.unpacker.accept.LongAccept;

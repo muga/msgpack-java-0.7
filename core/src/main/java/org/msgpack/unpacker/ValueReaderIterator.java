@@ -21,10 +21,15 @@ import java.io.IOException;
 import java.io.EOFException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.msgpack.type.Value;
+import org.msgpack.value.Value;
 
 public class ValueReaderIterator implements Iterator<Value> {
+    private ValueReader reader;
     private IOException exception;
+
+    public ValueReaderIterator(ValueReader reader) {
+        this.reader = reader;
+    }
 
     public boolean hasNext() {
         // TODO

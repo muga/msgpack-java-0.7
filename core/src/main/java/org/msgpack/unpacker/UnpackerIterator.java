@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.EOFException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.msgpack.type.Value;
+import org.msgpack.value.Value;
 
 public class UnpackerIterator implements Iterator<Value> {
     private IOException exception;

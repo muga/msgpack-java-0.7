@@ -25,10 +25,6 @@ public interface ValueAllocator {
 
     public BooleanValue createBooleanValue(boolean v);
 
-    public IntegerValue createIntegerValue(byte v);
-
-    public IntegerValue createIntegerValue(short v);
-
     public IntegerValue createIntegerValue(int v);
 
     public IntegerValue createIntegerValue(long v);
@@ -39,7 +35,7 @@ public interface ValueAllocator {
 
     public FloatValue createFloatValue(double v);
 
-    public RawValue createRawValue();
+    public RawValue createEmptyRawValue();
 
     public RawValue createRawValue(byte[] b);
 
@@ -51,13 +47,13 @@ public interface ValueAllocator {
 
     public RawValue createRawValue(ByteBuffer bb);
 
-    public ArrayValue createArrayValue();
+    public ArrayValue createEmptyArrayValue();
 
     public ArrayValue createArrayValue(Value[] array);
 
     public ArrayValue createArrayValue(Value[] array, boolean gift);
 
-    public MapValue createMapValue();
+    public MapValue createEmptyMapValue();
 
     public MapValue createMapValue(Value[] kvs);
 

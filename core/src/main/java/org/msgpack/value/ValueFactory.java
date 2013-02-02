@@ -21,116 +21,81 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
 public abstract class ValueFactory {
-    /*
+    private static SimpleValueAllocator allocator;
+
     public static NilValue createNilValue() {
-        return NilValue.getInstance();
+        return allocator.createNilValue();
     }
 
     public static BooleanValue createBooleanValue(boolean v) {
-        if (v) {
-            return TrueValueImpl.getInstance();
-        } else {
-            return FalseValueImpl.getInstance();
-        }
-    }
-
-    public static IntegerValue createIntegerValue(byte v) {
-        return new IntValueImpl((int) v);
-    }
-
-    public static IntegerValue createIntegerValue(short v) {
-        return new IntValueImpl((int) v);
+        return allocator.createBooleanValue(v);
     }
 
     public static IntegerValue createIntegerValue(int v) {
-        return new IntValueImpl(v);
+        return allocator.createIntegerValue(v);
     }
 
     public static IntegerValue createIntegerValue(long v) {
-        return new LongValueImpl(v);
+        return allocator.createIntegerValue(v);
     }
 
     public static IntegerValue createIntegerValue(BigInteger v) {
-        return new BigIntegerValueImpl(v);
+        return allocator.createIntegerValue(v);
     }
 
     public static FloatValue createFloatValue(float v) {
-        return new FloatValueImpl(v);
+        return allocator.createFloatValue(v);
     }
 
     public static FloatValue createFloatValue(double v) {
-        return new DoubleValueImpl(v);
+        return allocator.createFloatValue(v);
     }
 
-    public static RawValue createRawValue() {
-        return ByteArrayRawValueImpl.getEmptyInstance();
+    public static RawValue createEmptyRawValue() {
+        return allocator.createEmptyRawValue();
     }
 
     public static RawValue createRawValue(byte[] b) {
-        return createRawValue(b, false);
+        return allocator.createRawValue(b);
     }
 
     public static RawValue createRawValue(byte[] b, boolean gift) {
-        return new ByteArrayRawValueImpl(b, gift);
+        return allocator.createRawValue(b, gift);
     }
 
     public static RawValue createRawValue(byte[] b, int off, int len) {
-        return new ByteArrayRawValueImpl(b, off, len);
+        return allocator.createRawValue(b, off, len);
     }
 
     public static RawValue createRawValue(String s) {
-        return new StringRawValueImpl(s);
+        return allocator.createRawValue(s);
     }
 
     public static RawValue createRawValue(ByteBuffer bb) {
-        int pos = bb.position();
-        try {
-            byte[] buf = new byte[bb.remaining()];
-            bb.get(buf);
-            return new ByteArrayRawValueImpl(buf, true);
-        } finally {
-            bb.position(pos);
-        }
+        return allocator.createRawValue(bb);
     }
 
-    public static ArrayValue createArrayValue() {
-        return ArrayValueImpl.getEmptyInstance();
+    public static ArrayValue createEmptyArrayValue() {
+        return allocator.createEmptyArrayValue();
     }
 
     public static ArrayValue createArrayValue(Value[] array) {
-        if (array.length == 0) {
-            // TODO EmptyArrayValueImpl?
-            return ArrayValueImpl.getEmptyInstance();
-        }
-        return createArrayValue(array, false);
+        return allocator.createArrayValue(array);
     }
 
     public static ArrayValue createArrayValue(Value[] array, boolean gift) {
-        if (array.length == 0) {
-            // TODO EmptyArrayValueImpl?
-            return ArrayValueImpl.getEmptyInstance();
-        }
-        return new ArrayValueImpl(array, gift);
+        return allocator.createArrayValue(array, gift);
     }
 
-    public static MapValue createMapValue() {
-        return SequentialMapValueImpl.getEmptyInstance();
+    public static MapValue createEmptyMapValue() {
+        return allocator.createEmptyMapValue();
     }
 
     public static MapValue createMapValue(Value[] kvs) {
-        if (kvs.length == 0) {
-            // TODO EmptyMapValueImpl?
-            return SequentialMapValueImpl.getEmptyInstance();
-        }
-        return createMapValue(kvs, false);
+        return allocator.createMapValue(kvs);
     }
 
     public static MapValue createMapValue(Value[] kvs, boolean gift) {
-        if (kvs.length == 0) {
-            // TODO EmptyMapValueImpl?
-            return SequentialMapValueImpl.getEmptyInstance();
-        }
-        return new SequentialMapValueImpl(kvs, gift);
+        return allocator.createMapValue(kvs, gift);
     }
-    */
 }

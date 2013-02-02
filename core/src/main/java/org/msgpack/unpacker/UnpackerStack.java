@@ -17,7 +17,7 @@
 //
 package org.msgpack.unpacker;
 
-public class UnpackerStack {
+class UnpackerStack {
     public static enum StackType {
         ARRAY,
         MAP_KEY,
