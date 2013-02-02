@@ -17,27 +17,29 @@
 //
 package org.msgpack.unpacker.accept;
 
+import java.io.IOException;
+
 public interface Accept {
-    public void acceptNil();
+    public void acceptNil() throws IOException;
 
-    public void acceptBoolean(boolean v);
+    public void acceptBoolean(boolean v) throws IOException;
 
-    public void acceptInt(int v);
+    public void acceptInt(int v) throws IOException;
 
-    public void acceptLong(long v);
+    public void acceptLong(long v) throws IOException;
 
-    public void acceptUnsignedLong(long v);
+    public void acceptUnsignedLong(long v) throws IOException;
 
-    public void acceptByteArray(byte[] raw);
+    public void acceptByteArray(byte[] raw) throws IOException;
 
-    public void acceptEmptyByteArray();
+    public void acceptEmptyByteArray() throws IOException;
 
-    public void acceptFloat(float v);
+    public void acceptFloat(float v) throws IOException;
 
-    public void acceptDouble(double v);
+    public void acceptDouble(double v) throws IOException;
 
-    public void acceptArrayHeader(int size);
+    public void acceptArrayHeader(int size) throws IOException;
 
-    public void acceptMapHeader(int size);
+    public void acceptMapHeader(int size) throws IOException;
 }
 
