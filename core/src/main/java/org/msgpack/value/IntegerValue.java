@@ -15,8 +15,39 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.type;
+package org.msgpack.value;
 
-public interface BooleanValue extends Value {
-    public boolean getBoolean();
+import java.math.BigInteger;
+
+@SuppressWarnings("serial")
+public abstract class IntegerValue extends NumberValue {
+    @Override
+    public ValueType getType() {
+        return ValueType.INTEGER;
+    }
+
+    @Override
+    public boolean isIntegerValue() {
+        return true;
+    }
+
+    @Override
+    public IntegerValue asIntegerValue() {
+        return this;
+    }
+
+    public abstract byte getByte();
+
+    public abstract short getShort();
+
+    public abstract int getInt();
+
+    public abstract long getLong();
+
+    public BigInteger getBigInteger() {
+        return bigIntegerValue();
+    }
+
+    // TODO equals
+    // TODO hashCode
 }

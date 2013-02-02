@@ -15,11 +15,10 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.type;
+package org.msgpack.value;
 
 import java.io.IOException;
 import org.msgpack.packer.Packer;
-import org.msgpack.type.ValueType;
 
 public interface Value {
     public ValueType getType();

@@ -15,14 +15,29 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.type;
+package org.msgpack.value;
 
-import java.nio.charset.CharacterCodingException;
+public abstract class AbstractBooleanValue extends AbstractValue implements BooleanValue {
+    @Override
+    public ValueType getType() {
+        return ValueType.BOOLEAN;
+    }
 
-public interface RawValue extends Value {
-    public byte[] getByteArray();
+    @Override
+    public boolean isBooleanValue() {
+        return true;
+    }
 
-    public String getString() throws CharacterCodingException;
+    public boolean isTrue() {
+        return getBoolean();
+    }
 
-    public String string();
+    public boolean isFalse() {
+        return !getBoolean();
+    }
+
+    @Override
+    public BooleanValue asBooleanValue() {
+        return this;
+    }
 }

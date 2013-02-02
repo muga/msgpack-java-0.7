@@ -1,7 +1,7 @@
 //
 // MessagePack for Java
 //
-// Copyright (C) 2009 - 2013 FURUHASHI Sadayuki
+// Copyright (C) 2009-2013 FURUHASHI Sadayuki
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -15,49 +15,29 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.type;
+package org.msgpack.value;
 
 import java.io.IOException;
 import org.msgpack.packer.Packer;
 
-public class NilValue extends AbstractValue {
-    private NilValue() {
+public class TrueValueImpl extends AbstractBooleanValue {
+    private TrueValueImpl() {
     }
 
-    private static NilValue instance = new NilValue();
+    private static TrueValueImpl instance = new TrueValueImpl();
 
-    static NilValue getInstance() {
+    static TrueValueImpl getInstance() {
         return instance;
     }
 
     @Override
-    public ValueType getType() {
-        return ValueType.NIL;
-    }
-
-    @Override
-    public boolean isNilValue() {
+    public boolean getBoolean() {
         return true;
     }
 
     @Override
-    public NilValue asNilValue() {
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return "null";
-    }
-
-    @Override
-    public StringBuilder toString(StringBuilder sb) {
-        return sb.append("null");
-    }
-
-    @Override
     public void writeTo(Packer pk) throws IOException {
-        pk.writeNil();
+        pk.write(true);
     }
 
     @Override
@@ -68,11 +48,26 @@ public class NilValue extends AbstractValue {
         if (!(o instanceof Value)) {
             return false;
         }
-        return ((Value) o).isNilValue();
+        Value v = (Value) o;
+        if (!v.isBooleanValue()) {
+            return false;
+        }
+
+        return v.asBooleanValue().getBoolean() == true;
     }
 
     @Override
     public int hashCode() {
-        return 0;
+        return 1231;
+    }
+
+    @Override
+    public String toString() {
+        return "true";
+    }
+
+    @Override
+    public StringBuilder toString(StringBuilder sb) {
+        return sb.append("true");
     }
 }

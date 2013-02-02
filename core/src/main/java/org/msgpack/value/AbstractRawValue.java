@@ -15,7 +15,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.type;
+package org.msgpack.value;
 
 import java.util.Arrays;
 import java.nio.ByteBuffer;
@@ -24,7 +24,7 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 
-abstract class AbstractRawValue extends AbstractValue implements RawValue {
+public abstract class AbstractRawValue extends AbstractValue implements RawValue {
     @Override
     public ValueType getType() {
         return ValueType.RAW;

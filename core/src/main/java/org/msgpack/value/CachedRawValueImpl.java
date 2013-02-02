@@ -15,7 +15,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.type;
+package org.msgpack.value;
 
 import java.io.UnsupportedEncodingException;
 import java.io.IOException;
@@ -25,8 +25,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
-import org.msgpack.packer.Packer;
 import org.msgpack.MessageTypeException;
+import org.msgpack.packer.Packer;
 
 public class CachedRawValueImpl extends AbstractRawValue {
     // See constructors:

@@ -15,27 +15,13 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.type;
+package org.msgpack.value;
 
-import java.util.AbstractMap;
+import java.math.BigInteger;
 import org.msgpack.MessageTypeException;
 
-abstract class AbstractMapValue extends AbstractMap<Value, Value> implements MapValue {
-    @Override
-    public ValueType getType() {
-        return ValueType.MAP;
-    }
-
-    @Override
-    public boolean isMapValue() {
-        return true;
-    }
-
-    @Override
-    public MapValue asMapValue() {
-        return this;
-    }
-
+@SuppressWarnings("serial")
+public abstract class NumberValue extends Number implements Value {
     @Override
     public boolean isNilValue() {
         return false;
@@ -58,6 +44,11 @@ abstract class AbstractMapValue extends AbstractMap<Value, Value> implements Map
 
     @Override
     public boolean isArrayValue() {
+        return false;
+    }
+
+    @Override
+    public boolean isMapValue() {
         return false;
     }
 
@@ -92,7 +83,14 @@ abstract class AbstractMapValue extends AbstractMap<Value, Value> implements Map
     }
 
     @Override
+    public MapValue asMapValue() {
+        throw new MessageTypeException();
+    }
+
+    @Override
     public RawValue asRawValue() {
         throw new MessageTypeException();
     }
+
+    public abstract BigInteger bigIntegerValue();
 }

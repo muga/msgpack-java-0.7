@@ -15,25 +15,10 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.type;
+package org.msgpack.value;
 
-@SuppressWarnings("serial")
-public abstract class FloatValue extends NumberValue {
-    @Override
-    public ValueType getType() {
-        return ValueType.FLOAT;
-    }
+import java.util.Map;
 
-    @Override
-    public boolean isFloatValue() {
-        return true;
-    }
-
-    public FloatValue asFloatValue() {
-        return this;
-    }
-
-    public abstract float getFloat();
-
-    public abstract double getDouble();
+public interface MapValue extends Value, Map<Value, Value> {
+    public Value[] getKeyValueArray();
 }

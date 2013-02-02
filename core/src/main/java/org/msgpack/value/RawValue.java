@@ -15,10 +15,14 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-package org.msgpack.type;
+package org.msgpack.value;
 
-import java.util.Map;
+import java.nio.charset.CharacterCodingException;
 
-public interface MapValue extends Value, Map<Value, Value> {
-    public Value[] getKeyValueArray();
+public interface RawValue extends Value {
+    public byte[] getByteArray();
+
+    public String getString() throws CharacterCodingException;
+
+    public String string();
 }
