@@ -47,7 +47,7 @@ public class CachedRawValueImpl extends AbstractRawValue {
     }
 
     public CachedRawValueImpl(byte[] bytes, boolean gift) {
-        if (gift) {
+        if(gift) {
             this.bytes = bytes;
         } else {
             this.bytes = new byte[bytes.length];
@@ -128,20 +128,20 @@ public class CachedRawValueImpl extends AbstractRawValue {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
+        if(this == o) {
             return true;
         }
-        if (!(o instanceof Value)) {
+        if(!(o instanceof Value)) {
             return false;
         }
         Value v = (Value) o;
-        if (!v.isRawValue()) {
+        if(!v.isRawValue()) {
             return false;
         }
 
         // optimize:
         //   String.equals(String) is faster than Arrays.equals(byte[], byte[])
-        if (v.getClass() == CachedRawValueImpl.class) {
+        if(v.getClass() == CachedRawValueImpl.class) {
             CachedRawValueImpl rv = (CachedRawValueImpl) v;
             if(string != null && rv.string != null) {
                 string.equals(rv.string);

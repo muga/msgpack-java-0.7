@@ -41,32 +41,32 @@ class BigIntegerValueImpl extends IntegerValue {
 
     @Override
     public byte getByte() {
-        if (value.compareTo(BYTE_MAX) > 0 || value.compareTo(BYTE_MIN) < 0) {
-            throw new MessageTypeException(); // TODO message
+        if(value.compareTo(BYTE_MAX) > 0 || value.compareTo(BYTE_MIN) < 0) {
+            throw new MessageTypeException("Expected byte but got integer greater than "+Byte.MAX_VALUE+" or less than "+Byte.MIN_VALUE);
         }
         return value.byteValue();
     }
 
     @Override
     public short getShort() {
-        if (value.compareTo(SHORT_MAX) > 0 || value.compareTo(SHORT_MIN) < 0) {
-            throw new MessageTypeException(); // TODO message
+        if(value.compareTo(SHORT_MAX) > 0 || value.compareTo(SHORT_MIN) < 0) {
+            throw new MessageTypeException("Expected short but got integer greater than "+Short.MAX_VALUE+" or less than "+Short.MIN_VALUE);
         }
         return value.shortValue();
     }
 
     @Override
     public int getInt() {
-        if (value.compareTo(INT_MAX) > 0 || value.compareTo(INT_MIN) < 0) {
-            throw new MessageTypeException(); // TODO message
+        if(value.compareTo(INT_MAX) > 0 || value.compareTo(INT_MIN) < 0) {
+            throw new MessageTypeException("Expected int but got integer greater than "+Integer.MAX_VALUE+" or less than "+Integer.MIN_VALUE);
         }
         return value.intValue();
     }
 
     @Override
     public long getLong() {
-        if (value.compareTo(LONG_MAX) > 0 || value.compareTo(LONG_MIN) < 0) {
-            throw new MessageTypeException(); // TODO message
+        if(value.compareTo(LONG_MAX) > 0 || value.compareTo(LONG_MIN) < 0) {
+            throw new MessageTypeException("Expected long but got integer greater than "+Long.MAX_VALUE+" or less than "+Long.MIN_VALUE);
         }
         return value.longValue();
     }
@@ -116,18 +116,18 @@ class BigIntegerValueImpl extends IntegerValue {
         pk.write(value);
     }
 
-    // TODO compareTo
+    // TODO compareTo ?
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) {
+        if(o == this) {
             return true;
         }
-        if (!(o instanceof Value)) {
+        if(!(o instanceof Value)) {
             return false;
         }
         Value v = (Value) o;
-        if (!v.isIntegerValue()) {
+        if(!v.isIntegerValue()) {
             return false;
         }
 
@@ -136,9 +136,9 @@ class BigIntegerValueImpl extends IntegerValue {
 
     @Override
     public int hashCode() {
-        if (INT_MIN.compareTo(value) <= 0 && value.compareTo(INT_MAX) <= 0) {
+        if(INT_MIN.compareTo(value) <= 0 && value.compareTo(INT_MAX) <= 0) {
             return (int) value.longValue();
-        } else if (LONG_MIN.compareTo(value) <= 0
+        } else if(LONG_MIN.compareTo(value) <= 0
                 && value.compareTo(LONG_MAX) <= 0) {
             long v = value.longValue();
             return (int) (v ^ (v >>> 32));

@@ -66,7 +66,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(Boolean o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeBoolean(o);
@@ -76,7 +76,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(Byte o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeByte(o);
@@ -86,7 +86,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(Short o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeShort(o);
@@ -96,7 +96,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(Integer o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeInt(o);
@@ -106,7 +106,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(Long o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeLong(o);
@@ -116,7 +116,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(BigInteger o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeBigInteger(o);
@@ -126,7 +126,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(Float o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeFloat(o);
@@ -136,7 +136,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(Double o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeDouble(o);
@@ -146,7 +146,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(byte[] o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeByteArray(o, 0, o.length);
@@ -156,7 +156,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(byte[] o, int off, int len) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeByteArray(o, off, len);
@@ -166,7 +166,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(ByteBuffer o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeByteBuffer(o);
@@ -176,7 +176,7 @@ public abstract class AbstractPacker implements Packer {
 
     @Override
     public Packer write(String o) throws IOException {
-        if (o == null) {
+        if(o == null) {
             writeNil();
         } else {
             writeString(o);

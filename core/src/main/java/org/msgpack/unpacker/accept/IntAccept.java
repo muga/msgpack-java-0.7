@@ -33,16 +33,16 @@ public class IntAccept extends AbstractAccept {
 
     @Override
     public void acceptLong(long v) {
-        if (value < (long) Integer.MIN_VALUE || value > (long) Integer.MAX_VALUE) {
-            throw new MessageTypeException("Expected int but got integer larger than "+Integer.MAX_VALUE+" or smaller than "+Integer.MIN_VALUE);
+        if(value < (long) Integer.MIN_VALUE || value > (long) Integer.MAX_VALUE) {
+            throw new MessageTypeException("Expected int but got integer greater than "+Integer.MAX_VALUE+" or less than "+Integer.MIN_VALUE);
         }
         this.value = (int) v;
     }
 
     @Override
     public void acceptUnsignedLong(long v) {
-        if (v < 0 || v > (long) Integer.MAX_VALUE) {
-            throw new MessageTypeException("Expected int but got integer larger than "+Integer.MAX_VALUE+" or smaller than "+Integer.MIN_VALUE);
+        if(v < 0 || v > (long) Integer.MAX_VALUE) {
+            throw new MessageTypeException("Expected int but got integer greater than "+Integer.MAX_VALUE+" or less than "+Integer.MIN_VALUE);
         }
         this.value = (int) v;
     }

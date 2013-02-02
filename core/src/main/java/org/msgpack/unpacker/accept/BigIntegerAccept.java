@@ -38,7 +38,7 @@ public class BigIntegerAccept extends AbstractAccept {
 
     @Override
     public void acceptUnsignedLong(long v) {
-        if (v < 0L) {
+        if(v < 0L) {
             this.value = BigInteger.valueOf(v + Long.MAX_VALUE + 1L).setBit(63);
         } else {
             this.value = BigInteger.valueOf(v);

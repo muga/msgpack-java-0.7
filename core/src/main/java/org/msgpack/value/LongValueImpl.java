@@ -40,24 +40,24 @@ class LongValueImpl extends IntegerValue {
 
     @Override
     public byte getByte() {
-        if (value > BYTE_MAX || value < BYTE_MIN) {
-            throw new MessageTypeException(); // TODO message
+        if(value > BYTE_MAX || value < BYTE_MIN) {
+            throw new MessageTypeException("Expected byte but got integer greater than "+Byte.MAX_VALUE+" or less than "+Byte.MIN_VALUE);
         }
         return (byte) value;
     }
 
     @Override
     public short getShort() {
-        if (value > SHORT_MAX || value < SHORT_MIN) {
-            throw new MessageTypeException(); // TODO message
+        if(value > SHORT_MAX || value < SHORT_MIN) {
+            throw new MessageTypeException("Expected short but got integer greater than "+Short.MAX_VALUE+" or less than "+Short.MIN_VALUE);
         }
         return (short) value;
     }
 
     @Override
     public int getInt() {
-        if (value > INT_MAX || value < INT_MIN) {
-            throw new MessageTypeException(); // TODO message
+        if(value > INT_MAX || value < INT_MIN) {
+            throw new MessageTypeException("Expected int but got integer greater than "+Integer.MAX_VALUE+" or less than "+Integer.MIN_VALUE);
         }
         return (int) value;
     }
@@ -112,18 +112,18 @@ class LongValueImpl extends IntegerValue {
         pk.write(value);
     }
 
-    // TODO compareTo
+    // TODO compareTo ?
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) {
+        if(o == this) {
             return true;
         }
-        if (!(o instanceof Value)) {
+        if(!(o instanceof Value)) {
             return false;
         }
         Value v = (Value) o;
-        if (!v.isIntegerValue()) {
+        if(!v.isIntegerValue()) {
             return false;
         }
 
@@ -137,7 +137,7 @@ class LongValueImpl extends IntegerValue {
 
     @Override
     public int hashCode() {
-        if (INT_MIN <= value && value <= INT_MAX) {
+        if(INT_MIN <= value && value <= INT_MAX) {
             return (int) value;
         } else {
             return (int) (value ^ (value >>> 32));

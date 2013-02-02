@@ -152,7 +152,7 @@ public class MessagePacker extends AbstractPacker {
             ch.writeByteAndLong((byte) 0xcf, v.longValue());
         } else {
             throw new IllegalArgumentException(
-                    "MessagePack can't serialize BigInteger larger than (2^64)-1");
+                    "MessagePack can't serialize BigInteger greater than (2^64)-1");
         }
     }
 
@@ -226,7 +226,7 @@ public class MessagePacker extends AbstractPacker {
         if(size < 16) {
             // FixArray
             ch.writeByte((byte) (0x90 | size));
-        } else if (size < 65536) {
+        } else if(size < 65536) {
             ch.writeByteAndShort((byte) 0xdc, (short) size);
         } else {
             ch.writeByteAndInt((byte) 0xdd, size);

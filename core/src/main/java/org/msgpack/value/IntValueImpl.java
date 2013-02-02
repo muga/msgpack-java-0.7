@@ -39,7 +39,7 @@ class IntValueImpl extends IntegerValue {
     @Override
     public byte getByte() {
         if (value > BYTE_MAX || value < BYTE_MIN) {
-            throw new MessageTypeException(); // TODO message
+            throw new MessageTypeException("Expected byte but got integer greater than "+Byte.MAX_VALUE+" or less than "+Byte.MIN_VALUE);
         }
         return (byte) value;
     }
@@ -47,7 +47,7 @@ class IntValueImpl extends IntegerValue {
     @Override
     public short getShort() {
         if (value > SHORT_MAX || value < SHORT_MIN) {
-            throw new MessageTypeException(); // TODO message
+            throw new MessageTypeException("Expected short but got integer greater than "+Short.MAX_VALUE+" or less than "+Short.MIN_VALUE);
         }
         return (short) value;
     }

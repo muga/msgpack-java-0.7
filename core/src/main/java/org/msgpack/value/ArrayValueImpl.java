@@ -36,7 +36,7 @@ class ArrayValueImpl extends AbstractArrayValue {
     }
 
     ArrayValueImpl(Value[] array, boolean gift) {
-        if (gift) {
+        if(gift) {
             this.array = array;
         } else {
             this.array = new Value[array.length];
@@ -56,7 +56,7 @@ class ArrayValueImpl extends AbstractArrayValue {
 
     @Override
     public Value get(int index) {
-        if (index < 0 || array.length <= index) {
+        if(index < 0 || array.length <= index) {
             throw new IndexOutOfBoundsException();
         }
         return array[index];
@@ -64,11 +64,11 @@ class ArrayValueImpl extends AbstractArrayValue {
 
     @Override
     public int indexOf(Object o) {
-        if (o == null) {
-            return -1; // FIXME NullPointerException?
+        if(o == null) {
+            return -1;
         }
         for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(o)) {
+            if(array[i].equals(o)) {
                 return i;
             }
         }
@@ -77,11 +77,11 @@ class ArrayValueImpl extends AbstractArrayValue {
 
     @Override
     public int lastIndexOf(Object o) {
-        if (o == null) {
-            return -1; // FIXME NullPointerException?
+        if(o == null) {
+            return -1;
         }
         for (int i = array.length - 1; i >= 0; i--) {
-            if (array[i].equals(o)) {
+            if(array[i].equals(o)) {
                 return i;
             }
         }
@@ -98,25 +98,25 @@ class ArrayValueImpl extends AbstractArrayValue {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) {
+        if(o == this) {
             return true;
         }
-        if (!(o instanceof Value)) {
+        if(!(o instanceof Value)) {
             return false;
         }
         Value v = (Value) o;
-        if (!v.isArrayValue()) {
+        if(!v.isArrayValue()) {
             return false;
         }
 
-        if (v.getClass() == ArrayValueImpl.class) {
+        if(v.getClass() == ArrayValueImpl.class) {
             return equals((ArrayValueImpl) v);
         }
 
         ListIterator<Value> oi = v.asArrayValue().listIterator();
         int i = 0;
         while (i < array.length) {
-            if (!oi.hasNext() || !array[i].equals(oi.next())) {
+            if(!oi.hasNext() || !array[i].equals(oi.next())) {
                 return false;
             }
         }
@@ -124,11 +124,11 @@ class ArrayValueImpl extends AbstractArrayValue {
     }
 
     private boolean equals(ArrayValueImpl o) {
-        if (array.length != o.array.length) {
+        if(array.length != o.array.length) {
             return false;
         }
         for (int i = 0; i < array.length; i++) {
-            if (!array[i].equals(o.array[i])) {
+            if(!array[i].equals(o.array[i])) {
                 return false;
             }
         }
@@ -154,7 +154,7 @@ class ArrayValueImpl extends AbstractArrayValue {
 
     @Override
     public StringBuilder toString(StringBuilder sb) {
-        if (array.length == 0) {
+        if(array.length == 0) {
             return sb.append("[]");
         }
         sb.append("[");

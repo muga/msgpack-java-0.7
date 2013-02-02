@@ -77,14 +77,14 @@ class FloatValueImpl extends FloatValue {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) {
+        if(o == this) {
             return true;
         }
-        if (!(o instanceof Value)) {
+        if(!(o instanceof Value)) {
             return false;
         }
         Value v = (Value) o;
-        if (!v.isFloatValue()) {
+        if(!v.isFloatValue()) {
             return false;
         }
 

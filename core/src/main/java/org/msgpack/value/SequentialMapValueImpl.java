@@ -43,10 +43,10 @@ class SequentialMapValueImpl extends AbstractMapValue {
     }
 
     SequentialMapValueImpl(Value[] array, boolean gift) {
-        if (array.length % 2 != 0) {
+        if(array.length % 2 != 0) {
             throw new IllegalArgumentException(); // TODO message
         }
-        if (gift) {
+        if(gift) {
             this.array = array;
         } else {
             this.array = new Value[array.length];
@@ -56,11 +56,11 @@ class SequentialMapValueImpl extends AbstractMapValue {
 
     @Override
     public Value get(Object key) {
-        if (key == null) {
+        if(key == null) {
             return null;
         }
         for (int i = array.length - 2; i >= 0; i -= 2) {
-            if (array[i].equals(key)) {
+            if(array[i].equals(key)) {
                 return array[i + 1];
             }
         }
@@ -102,8 +102,8 @@ class SequentialMapValueImpl extends AbstractMapValue {
 
         @Override
         public Map.Entry<Value, Value> next() {
-            if (pos >= array.length) {
-                throw new NoSuchElementException(); // TODO message
+            if(pos >= array.length) {
+                throw new NoSuchElementException();
             }
             Map.Entry<Value, Value> pair =
                 new AbstractMap.SimpleImmutableEntry<Value, Value>(array[pos], array[pos + 1]);
@@ -113,7 +113,7 @@ class SequentialMapValueImpl extends AbstractMapValue {
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException(); // TODO message
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -169,8 +169,8 @@ class SequentialMapValueImpl extends AbstractMapValue {
 
         @Override
         public Value next() {
-            if (pos >= array.length) {
-                throw new NoSuchElementException(); // TODO message
+            if(pos >= array.length) {
+                throw new NoSuchElementException();
             }
             Value v = array[pos];
             pos += 2;
@@ -179,7 +179,7 @@ class SequentialMapValueImpl extends AbstractMapValue {
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException(); // TODO message
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -208,19 +208,19 @@ class SequentialMapValueImpl extends AbstractMapValue {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) {
+        if(o == this) {
             return true;
         }
-        if (!(o instanceof Value)) {
+        if(!(o instanceof Value)) {
             return false;
         }
         Value v = (Value) o;
-        if (!v.isMapValue()) {
+        if(!v.isMapValue()) {
             return false;
         }
 
         Map<Value, Value> om = v.asMapValue();
-        if (om.size() != array.length / 2) {
+        if(om.size() != array.length / 2) {
             return false;
         }
 
@@ -228,7 +228,7 @@ class SequentialMapValueImpl extends AbstractMapValue {
             for (int i = 0; i < array.length; i += 2) {
                 Value key = array[i];
                 Value value = array[i + 1];
-                if (!value.equals(om.get(key))) {
+                if(!value.equals(om.get(key))) {
                     return false;
                 }
             }
@@ -293,7 +293,7 @@ class SequentialMapValueImpl extends AbstractMapValue {
 
     @Override
     public StringBuilder toString(StringBuilder sb) {
-        if (array.length == 0) {
+        if(array.length == 0) {
             return sb.append("{}");
         }
         sb.append("{");

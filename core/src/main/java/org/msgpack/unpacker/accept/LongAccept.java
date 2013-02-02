@@ -38,8 +38,8 @@ public class LongAccept extends AbstractAccept {
 
     @Override
     public void acceptUnsignedLong(long v) {
-        if (v < 0L) {
-            throw new MessageTypeException(); // TODO message
+        if(v < 0L) {
+            throw new MessageTypeException("Expected long but got integer greater than "+Long.MAX_VALUE);
         }
         this.value = v;
     }
