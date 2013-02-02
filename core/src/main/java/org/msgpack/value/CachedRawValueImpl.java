@@ -100,6 +100,13 @@ public class CachedRawValueImpl extends AbstractRawValue {
         return string;
     }
 
+    public String getString(CharsetDecoder decoder) throws CharacterCodingException {
+        if(string != null) {
+            return string;
+        }
+        return decoder.decode(ByteBuffer.wrap(bytes)).toString();
+    }
+
     @Override
     public String string() {
         if(normalizedString == null) {
