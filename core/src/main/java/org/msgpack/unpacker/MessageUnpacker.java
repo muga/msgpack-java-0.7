@@ -18,12 +18,15 @@
 package org.msgpack.unpacker;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import org.msgpack.buffer.Buffer;
 import org.msgpack.unpacker.accept.Accept;
 import org.msgpack.unpacker.accept.IntAccept;
 import org.msgpack.unpacker.accept.LongAccept;
 import org.msgpack.unpacker.accept.BigIntegerAccept;
 import org.msgpack.unpacker.accept.DoubleAccept;
+import org.msgpack.unpacker.accept.BooleanAccept;
+import org.msgpack.unpacker.accept.NilAccept;
 import org.msgpack.unpacker.accept.ByteArrayAccept;
 import org.msgpack.unpacker.accept.StringAccept;
 import org.msgpack.unpacker.accept.ArrayAccept;
@@ -42,14 +45,16 @@ public class MessageUnpacker implements Unpacker {
     private byte[] raw;
     private int rawFilled;
 
-    private final IntAccept intAccept = new IntAccept();
-    private final LongAccept longAccept = new LongAccept();
-    private final BigIntegerAccept bigIntegerAccept = new BigIntegerAccept();
-    private final DoubleAccept doubleAccept = new DoubleAccept();
-    private final ByteArrayAccept byteArrayAccept = new ByteArrayAccept();
-    private final StringAccept stringAccept = new StringAccept();
-    private final ArrayAccept arrayAccept = new ArrayAccept();
-    private final MapAccept mapAccept = new MapAccept();
+    private static final IntAccept intAccept = new IntAccept();
+    private static final LongAccept longAccept = new LongAccept();
+    private static final BigIntegerAccept bigIntegerAccept = new BigIntegerAccept();
+    private static final DoubleAccept doubleAccept = new DoubleAccept();
+    private static final BooleanAccept booleanAccept = new BooleanAccept();
+    private static final NilAccept nilAccept = new NilAccept();
+    private static final ByteArrayAccept byteArrayAccept = new ByteArrayAccept();
+    private static final StringAccept stringAccept = new StringAccept();
+    private static final ArrayAccept arrayAccept = new ArrayAccept();
+    private static final MapAccept mapAccept = new MapAccept();
 
     public MessageUnpacker(Buffer buffer) {
         this.buffer = buffer;
@@ -310,14 +315,53 @@ public class MessageUnpacker implements Unpacker {
         return false;
     }
 
+    public int readInt() throws IOException {
+        readToken(intAccept);
+        return intAccept.getValue();
+    }
+
+    public long readLong() throws IOException {
+        readToken(longAccept);
+        return longAccept.getValue();
+    }
+
+    public BigInteger readBigInteger() throws IOException {
+        readToken(bigIntegerAccept);
+        return bigIntegerAccept.getValue();
+    }
+
+    public double readDouble() throws IOException {
+        readToken(doubleAccept);
+        return doubleAccept.getValue();
+    }
+
+    public boolean readBoolean() throws IOException {
+        readToken(booleanAccept);
+        return booleanAccept.getValue();
+    }
+
+    public void readNil() throws IOException {
+        readToken(nilAccept);
+    }
+
+    public byte[] readByteArray() throws IOException {
+        readToken(byteArrayAccept);
+        return byteArrayAccept.getValue();
+    }
+
+    public String readString() throws IOException {
+        readToken(stringAccept);
+        return stringAccept.getValue();
+    }
+
     public int readArrayHeader() throws IOException {
-        // TODO
-        return 0;
+        readToken(arrayAccept);
+        return arrayAccept.getSize();
     }
 
     public int readMapHeader() throws IOException {
-        // TODO
-        return 0;
+        readToken(mapAccept);
+        return mapAccept.getSize();
     }
 
     public void close() throws IOException {

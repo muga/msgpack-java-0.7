@@ -19,16 +19,31 @@ package org.msgpack.unpacker;
 
 import java.io.IOException;
 import java.io.Closeable;
+import java.math.BigInteger;
 import org.msgpack.unpacker.accept.Accept;
 
 public interface Unpacker extends Closeable {
     public void readToken(Accept accept) throws IOException;
 
-    //public Value read() throws IOException;
-
     //public void skip() throws IOException;
 
     public boolean trySkipNil() throws IOException;
+
+    public int readInt() throws IOException;
+
+    public long readLong() throws IOException;
+
+    public BigInteger readBigInteger() throws IOException;
+
+    public double readDouble() throws IOException;
+
+    public boolean readBoolean() throws IOException;
+
+    public void readNil() throws IOException;
+
+    public byte[] readByteArray() throws IOException;
+
+    public String readString() throws IOException;
 
     public int readArrayHeader() throws IOException;
 
