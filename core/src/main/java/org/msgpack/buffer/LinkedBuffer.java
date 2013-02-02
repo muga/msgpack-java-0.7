@@ -397,6 +397,9 @@ public class LinkedBuffer {
         public double readDouble() throws IOException {
             return LinkedBuffer.this.ensureReadableSize(8).getDouble();
         }
+
+        public void close() throws IOException {
+        }
     }
 }
 

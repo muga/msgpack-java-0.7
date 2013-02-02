@@ -17,67 +17,52 @@
 //
 package org.msgpack.unpacker;
 
+import java.io.InputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import org.msgpack.buffer.Buffer;
 
-public class BufferUnpackerChannel implements UnpackerChannel {
-    private Buffer buffer;
+public class InputStreamUnpackerChannel implements UnpackerChannel {
+    private DataInputStream stream;
 
-    private byte[] castBlockArray;
-    private ByteBuffer castBlock;
-
-    public BufferUnpackerChannel(Buffer buffer) {
-        this.buffer = buffer;
-        this.castBlockArray = new byte[9];
-        this.castBlock = ByteBuffer.wrap(castBlockArray);
+    public InputStreamUnpackerChannel(InputStream stream) {
+        this.stream = new DataInputStream(stream);
     }
 
     public int read(byte[] b, int off, int len) throws IOException {
-        return buffer.read(b, off, len);
+        return stream.read(b, off, len);
     }
 
     public int skip(int n) throws IOException {
-        return buffer.skip(n);
+        // TODO
+        throw new UnsupportedOperationException("not implemented yet");
     }
 
     public byte readByte() throws IOException {
-        return buffer.read();
+        return stream.readByte();
     }
 
     public short readShort() throws IOException {
-        castBlock.position(0);
-        castBlock.limit(2);
-        buffer.readAll(castBlock);
-        return castBlock.getShort(0);
+        return stream.readShort();
     }
 
     public int readInt() throws IOException {
-        castBlock.position(0);
-        castBlock.limit(4);
-        buffer.readAll(castBlock);
-        return castBlock.getInt(0);
+        return stream.readInt();
     }
 
     public long readLong() throws IOException {
-        castBlock.position(0);
-        castBlock.limit(8);
-        buffer.readAll(castBlock);
-        return castBlock.getLong(0);
+        return stream.readLong();
     }
 
     public float readFloat() throws IOException {
-        castBlock.position(0);
-        castBlock.limit(4);
-        buffer.readAll(castBlock);
-        return castBlock.getFloat(0);
+        return stream.readFloat();
     }
 
     public double readDouble() throws IOException {
-        castBlock.position(0);
-        castBlock.limit(8);
-        buffer.readAll(castBlock);
-        return castBlock.getDouble(0);
+        return stream.readDouble();
+    }
+
+    public void close() throws IOException {
+        stream.close();
     }
 }
-

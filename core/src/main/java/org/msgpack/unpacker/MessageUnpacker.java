@@ -20,7 +20,6 @@ package org.msgpack.unpacker;
 import java.io.IOException;
 import java.io.EOFException;
 import java.math.BigInteger;
-import org.msgpack.buffer.Buffer;
 import org.msgpack.value.ValueType;
 import org.msgpack.unpacker.accept.Accept;
 import org.msgpack.unpacker.accept.IntAccept;
@@ -35,7 +34,6 @@ import org.msgpack.unpacker.accept.ArrayAccept;
 import org.msgpack.unpacker.accept.MapAccept;
 
 public class MessageUnpacker implements Unpacker {
-    private Buffer buffer;
     private UnpackerChannel ch;
 
     protected int rawSizeLimit = 134217728;
@@ -58,13 +56,8 @@ public class MessageUnpacker implements Unpacker {
     private static final ArrayAccept arrayAccept = new ArrayAccept();
     private static final MapAccept mapAccept = new MapAccept();
 
-    public MessageUnpacker(Buffer buffer) {
-        this.buffer = buffer;
-        if(buffer instanceof UnpackerChannelProvider) {
-            ch = ((UnpackerChannelProvider) buffer).getUnpackerChannel();
-        } else {
-            ch = new BufferUnpackerChannel(buffer);
-        }
+    public MessageUnpacker(UnpackerChannel ch) {
+        this.ch = ch;
     }
 
     private static final byte REQUIRE_TO_READ_HEAD = (byte) 0xc6;
@@ -437,7 +430,7 @@ public class MessageUnpacker implements Unpacker {
     }
 
     public void close() throws IOException {
-        buffer.close();
+        ch.close();
     }
 }
 

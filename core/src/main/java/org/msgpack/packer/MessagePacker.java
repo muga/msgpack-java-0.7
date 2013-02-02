@@ -21,19 +21,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
-import org.msgpack.buffer.Buffer;
 
 public class MessagePacker extends AbstractPacker {
-    private Buffer buffer;
     private PackerChannel ch;
 
-    public MessagePacker(Buffer buffer) {
-        this.buffer = buffer;
-        if(buffer instanceof PackerChannelProvider) {
-            ch = ((PackerChannelProvider) buffer).getPackerChannel();
-        } else {
-            ch = new BufferPackerChannel(buffer);
-        }
+    public MessagePacker(PackerChannel ch) {
+        this.ch = ch;
     }
 
     @Override
@@ -257,13 +250,13 @@ public class MessagePacker extends AbstractPacker {
     }
 
     @Override
-    public void close() throws IOException {
-        buffer.close();
+    public void flush() throws IOException {
+        ch.flush();
     }
 
     @Override
-    public void flush() throws IOException {
-        buffer.flush();
+    public void close() throws IOException {
+        ch.close();
     }
 }
 

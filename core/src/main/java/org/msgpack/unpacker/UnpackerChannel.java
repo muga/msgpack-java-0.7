@@ -18,9 +18,10 @@
 package org.msgpack.unpacker;
 
 import java.io.IOException;
+import java.io.Closeable;
 import java.nio.ByteBuffer;
 
-public interface UnpackerChannel {
+public interface UnpackerChannel extends Closeable {
     public int read(byte[] b, int off, int len) throws IOException;
 
     public int skip(int n) throws IOException;
