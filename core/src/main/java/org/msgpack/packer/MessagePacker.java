@@ -27,6 +27,15 @@ public class MessagePacker extends AbstractPacker {
     public Buffer buffer;
     public PackerChannel ch;
 
+    public MessagePacker(Buffer buffer) {
+        this.buffer = buffer;
+        if(buffer instanceof PackerChannelProvider) {
+            ch = ((PackerChannelProvider) buffer).getPackerChannel();
+        } else {
+            ch = new BufferPackerChannel(buffer);
+        }
+    }
+
     @Override
     protected void writeByte(byte v) throws IOException {
         if(v < -(1 << 5)) {

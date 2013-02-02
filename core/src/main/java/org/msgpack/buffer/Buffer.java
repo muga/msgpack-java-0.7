@@ -35,6 +35,10 @@ public interface Buffer extends Closeable, Flushable {
 
     public boolean isEmpty();
 
+    public void write(byte b) throws IOException;
+
+    public void write(byte[] b, int off, int len) throws IOException;
+
     public void write(ByteBuffer src) throws IOException;
 
     public int read(ByteBuffer dst) throws IOException;
