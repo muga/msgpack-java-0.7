@@ -20,9 +20,12 @@ package org.msgpack.unpacker;
 import java.lang.Iterable;
 import java.io.IOException;
 import java.io.Closeable;
+import java.math.BigInteger;
 import org.msgpack.value.Value;
 import org.msgpack.value.ValueAllocator;
 import org.msgpack.unpacker.accept.Accept;
+import org.msgpack.value.Value;
+import org.msgpack.unpacker.UnpackerStack.StackType;
 
 public class ValueReader implements Closeable, Iterable<Value> {
     private Unpacker unpacker;
@@ -34,39 +37,62 @@ public class ValueReader implements Closeable, Iterable<Value> {
 
     private class ValueReaderAccept implements Accept {
         public void acceptNil() {
-            if(stack.isEmpty()) {
-                result = allocator.createNilValue();
-            }
+            objectComplete(allocator.createNilValue());
         }
 
         public void acceptBoolean(boolean v) {
+            objectComplete(allocator.createBooleanValue(v));
         }
 
         public void acceptInt(int v) {
+            objectComplete(allocator.createIntegerValue(v));
         }
 
         public void acceptLong(long v) {
+            objectComplete(allocator.createIntegerValue(v));
         }
 
         public void acceptUnsignedLong(long v) {
+            Value value;
+            if(v < 0L) {
+                BigInteger bi = BigInteger.valueOf(v + Long.MAX_VALUE + 1L).setBit(63);
+                value = allocator.createIntegerValue(bi);
+            } else {
+                value = allocator.createIntegerValue(v);
+            }
+            objectComplete(value);
         }
 
         public void acceptByteArray(byte[] raw) {
+            objectComplete(allocator.createRawValue(raw, true));  // use gift=true
         }
 
         public void acceptEmptyByteArray() {
+            objectComplete(allocator.createEmptyRawValue());
         }
 
         public void acceptFloat(float v) {
+            objectComplete(allocator.createFloatValue(v));
         }
 
         public void acceptDouble(double v) {
+            objectComplete(allocator.createFloatValue(v));
         }
 
-        public void acceptArrayHeader(int size) {
+        public void acceptArrayHeader(int size) throws UnpackException {
+            if(size == 0) {
+                objectComplete(allocator.createEmptyArrayValue());
+                return;
+            }
+            pushArray(size);
         }
 
-        public void acceptMapHeader(int size) {
+        public void acceptMapHeader(int size) throws UnpackException {
+            if(size == 0) {
+                objectComplete(allocator.createEmptyMapValue());
+                return;
+            }
+            pushMap(size);
         }
     }
 
@@ -82,6 +108,53 @@ public class ValueReader implements Closeable, Iterable<Value> {
             unpacker.readToken(accept);
         } while(result == null);
         return result;
+    }
+
+    private void objectComplete(Value v) {
+        while(!stack.isEmpty()) {
+            switch(stack.getTopType()) {
+            case ARRAY_ELEMENT:
+                {
+                    Value[] array = stack.getTopContainer();
+                    array[array.length - stack.getTopCount()] = v;
+                    if(stack.decrTopCount() > 0) {
+                        return;
+                    }
+                    stack.pop();
+                    v = allocator.createArrayValue(array, true);
+                }
+                break;
+            case MAP_KEY:
+                {
+                    Value[] kvs = stack.getTopContainer();
+                    kvs[kvs.length - stack.getTopCount()] = v;
+                    stack.decrTopCount();
+                    stack.setTopType(StackType.MAP_VALUE);
+                    return;
+                }
+            case MAP_VALUE:
+                {
+                    Value[] kvs = stack.getTopContainer();
+                    kvs[kvs.length - stack.getTopCount()] = v;
+                    if(stack.decrTopCount() > 0) {
+                        stack.setTopType(StackType.MAP_KEY);
+                        return;
+                    }
+                    stack.pop();
+                    v = allocator.createMapValue(kvs, true);
+                }
+                break;
+            }
+        }
+        this.result = v;
+    }
+
+    private void pushArray(int size) throws MessageStackException {
+        stack.push(StackType.ARRAY_ELEMENT, size, new Value[size]);
+    }
+
+    private void pushMap(int size) throws MessageStackException {
+        stack.push(StackType.MAP_KEY, size, new Value[size*2]);
     }
 
     public ValueReaderIterator iterator() {

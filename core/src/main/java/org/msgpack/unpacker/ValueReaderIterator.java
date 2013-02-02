@@ -25,6 +25,7 @@ import org.msgpack.value.Value;
 
 public class ValueReaderIterator implements Iterator<Value> {
     private ValueReader reader;
+    private Value nextValue;
     private IOException exception;
 
     public ValueReaderIterator(ValueReader reader) {
@@ -32,13 +33,27 @@ public class ValueReaderIterator implements Iterator<Value> {
     }
 
     public boolean hasNext() {
-        // TODO
-        return false;
+        if(nextValue != null) {
+            return true;
+        } else if(exception != null) {
+            return false;
+        }
+        try {
+            nextValue = reader.read();
+            return true;
+        } catch (EOFException ex) {
+            return false;
+        } catch (IOException ex) {
+            exception = ex;
+            return false;
+        }
     }
 
     public Value next() {
-        // TODO
-        return null;
+        if(!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        return nextValue;
     }
 
     public void remove() {

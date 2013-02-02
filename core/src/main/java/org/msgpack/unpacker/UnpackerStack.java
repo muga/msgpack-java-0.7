@@ -17,9 +17,11 @@
 //
 package org.msgpack.unpacker;
 
+import org.msgpack.value.Value;
+
 class UnpackerStack {
     public static enum StackType {
-        ARRAY,
+        ARRAY_ELEMENT,
         MAP_KEY,
         MAP_VALUE;
     };
@@ -27,8 +29,7 @@ class UnpackerStack {
     private int depth;
     private StackType[] types;
     private int[] counts;
-    private Object[] containers;
-    private Object[] mapKeys;
+    private Value[][] containers;
 
     public boolean isEmpty() {
         return depth == 0;
@@ -42,7 +43,7 @@ class UnpackerStack {
         --depth;
     }
 
-    public void push(StackType type, int count, Object container) throws MessageStackException {
+    public void push(StackType type, int count, Value[] container) throws MessageStackException {
         if(getCapacity() - depth <= 0) {
             throw new MessageStackException("stack level too deep");
         }
@@ -50,7 +51,6 @@ class UnpackerStack {
         types[depth] = type;
         counts[depth] = count;
         containers[depth] = container;
-        mapKeys[depth] = null;
 
         ++depth;
     }
@@ -67,16 +67,8 @@ class UnpackerStack {
         return counts[depth-1];
     }
 
-    public Object getTopContainer() {
+    public Value[] getTopContainer() {
         return containers[depth-1];
-    }
-
-    public Object getTopMapKey() {
-        return mapKeys[depth-1];
-    }
-
-    public void setTopMapKey(Object key) {
-        mapKeys[depth-1] = key;
     }
 
     public int getCapacity() {
