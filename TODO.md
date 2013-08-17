@@ -19,6 +19,11 @@
 - TemplateBuilder がシリアライズとデシリアライズの両方のメソッドを同時に生成する点
 - Generics で <?> を使用すると pack できるけど、unpack が困難
 
+- Aug/17/2013
+    * 小さい仕様から実装していく
+    * setter/getter と適切な注釈があるクラスのみ templates を作成できる
+    * 型パラメータを型にもつ fields をもっていたらビルドエラー
+
 ## 3. msgpack-java のモジュール化
 - TemplateRegistry や TemplateBuilder を別のパッケージとして切り出す
 - msgpack-java のコアはシンプルにするとか
